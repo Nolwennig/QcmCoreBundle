@@ -1,5 +1,5 @@
 {
-    "name": "qcm/core-bundle",
+    "name": "avoo/qcm-core-bundle",
     "description": "QCM Core bundle for Symfony2",
     "type": "symfony-bundle",
     "require": {
