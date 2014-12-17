@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "require": {
         "php": ">=5.3.3",
-        "avoo/qcm-components": "*"
+        "avoo/qcm-components": "*@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
