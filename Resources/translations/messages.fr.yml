@@ -1,0 +1,6 @@
+qcm_core:
+    button:
+        save: Enregistrer
+    label:
+        username: Nom d'utilisateur
+        password: Mot de passe

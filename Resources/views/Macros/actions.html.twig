@@ -1,0 +1,78 @@
+{% macro add(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-primary">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-plus') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.add'|trans : message }}</span>
+    </a>
+{% endmacro %}
+
+{% macro show(url, message, glyphicon=null) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-success">
+        {% if glyphicon is not null %}
+            {{ actions.glyphicon(glyphicon) }}
+        {% endif %}
+        <span>{{ message }}</span>
+    </a>
+{% endmacro %}
+
+{% macro edit(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-info">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-pencil') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.edit'|trans : message }}</span>
+    </a>
+{% endmacro %}
+
+{% macro delete(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-danger">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-remove') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.delete'|trans : message }}</span>
+    </a>
+{% endmacro %}
+
+{% macro cancel(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-default">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-arrow-left') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.cancel'|trans : message }}</span>
+    </a>
+{% endmacro %}
+
+{% macro submit(value, class='btn-primary', glyphicon='glyphicon-save') %}
+    <input type="submit" class="btn {{ class }}" value="{{ value is empty ? 'qcm_core.button.save'|trans : value }}">
+{% endmacro %}
+
+{% macro glyphicon(glyphicon) %}
+    <i class="glyphicon {{ glyphicon }}"></i>
+{% endmacro %}
+
+{% macro title(text, glyphicon) %}
+    {% import _self as actions %}
+    <h4 class="row popover-title control-label">{{ actions.glyphicon(glyphicon) }} {{ text }}</h4>
+{% endmacro %}
+
+{% macro export(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-info">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-export') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.export'|trans : message }}</span>
+    </a>
+{% endmacro %}

@@ -1,0 +1,14 @@
+qcm_core_security_login:
+    pattern: /login
+    defaults:
+        _controller: qcm_core.controller.security:loginAction
+
+qcm_core_security_login_check:
+    pattern: /login_check
+    defaults:
+        _controller: qcm_core.controller.security:loginCheck
+
+qcm_core_security_logout:
+    pattern: /logout
+    defaults:
+        _controller: qcm_core.controller.security:logout

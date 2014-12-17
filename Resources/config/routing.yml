@@ -1,0 +1,3 @@
+qcm_core_security_resource:
+    prefix: /security
+    resource: @QcmCoreBundle/Resources/config/routing/security.yml

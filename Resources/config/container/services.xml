@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="qcm.user_manager" class="Qcm\Bundle\CoreBundle\Doctrine\UserManager" public="false">
+            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%qcm.model.user.class%</argument>
+        </service>
+
+        <service id="qcm.user_provider.username" class="Qcm\Bundle\CoreBundle\Security\UserProvider" public="false">
+            <argument type="service" id="qcm.user_manager" />
+        </service>
+    </services>
+</container>
