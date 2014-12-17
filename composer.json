@@ -3,8 +3,7 @@
     "description": "QCM Core bundle for Symfony2",
     "type": "symfony-bundle",
     "require": {
-        "php": ">=5.3.3",
-        "avoo/qcm-components": "dev-master@dev"
+        "php": ">=5.3.3"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
