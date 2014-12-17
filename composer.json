@@ -6,7 +6,8 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "avoo/qcm-components": "~0.1@dev"
     },
     "minimum-stability": "stable",
     "license": "MIT",
