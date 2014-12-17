@@ -3,11 +3,11 @@
     "description": "QCM Core bundle for Symfony2",
     "type": "symfony-bundle",
     "require": {
-        "php": ">=5.3.3",
-        "avoo/qcm-components": "0.1.*@dev"
+        "php": ">=5.3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "avoo/qcm-components": "0.1.*@dev"
     },
     "minimum-stability": "stable",
     "license": "MIT",
