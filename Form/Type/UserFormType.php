@@ -28,7 +28,19 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('username', 'text', array(
-                'label' => 'qcm_core.form.username'
+                'label' => 'qcm_core.label.username'
+            ))
+            ->add('email', 'email', array(
+                'label' => 'qcm_core.label.email'
+            ))
+            ->add('plainPassword', 'repeated', array(
+                'type' => 'password',
+                'first_options' => array(
+                    'label' => 'qcm_core.label.password'
+                ),
+                'second_options' => array(
+                    'label' => 'qcm_core.label.password_confirmation'
+                )
             ));
     }
 

@@ -1,6 +1,15 @@
 qcm_core:
     button:
         save: Enregistrer
+        add: Ajouter
+        cancel: Annuler
+        edit: Editer
+        delete: Supprimer
+        export: Exporter
+        print: Imprimer
+
     label:
         username: Nom d'utilisateur
         password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        email: Email

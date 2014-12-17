@@ -76,3 +76,14 @@
         <span>{{ message is empty ? 'qcm_core.button.export'|trans : message }}</span>
     </a>
 {% endmacro %}
+
+{% macro print(url, message, glyphicon=true) %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-info">
+        {% if glyphicon == true %}
+            {{ actions.glyphicon('glyphicon-print') }}
+        {% endif %}
+        <span>{{ message is empty ? 'qcm_core.button.print'|trans : message }}</span>
+    </a>
+{% endmacro %}
