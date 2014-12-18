@@ -18,6 +18,7 @@
         <service id="qcm_core.user.registration.listener" class="Qcm\Bundle\CoreBundle\Listener\UserRegistrationListener">
             <argument type="service" id="qcm_core.user_manager" />
             <tag name="kernel.event_listener" event="qcm_core.user.pre_create" method="updatePassword" />
+            <tag name="kernel.event_listener" event="qcm_core.user.pre_update" method="updatePassword" />
         </service>
     </services>
 </container>

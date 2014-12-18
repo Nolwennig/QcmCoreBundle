@@ -47,6 +47,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('user')->defaultValue('QcmCoreRegistration')->end()
+                        ->scalarNode('user_profile')->defaultValue('QcmCoreProfile')->end()
                     ->end()
                 ->end()
 
@@ -76,7 +77,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('model')->end()
-                                ->scalarNode('controller')->defaultValue('Sylius\Bundle\ResourceBundle\Controller\ResourceController')->end()
+                                ->scalarNode('controller')->defaultValue('Qcm\Bundle\CoreBundle\Controller\UserController')->end()
                                 ->scalarNode('repository')->end()
                                 ->scalarNode('form')->defaultValue('Qcm\Bundle\CoreBundle\Form\Type\UserFormType')->end()
                             ->end()

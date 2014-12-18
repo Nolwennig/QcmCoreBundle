@@ -53,6 +53,9 @@ class UserFormType extends AbstractType
                 'second_options' => array(
                     'label' => 'qcm_core.label.password_confirmation'
                 )
+            ))
+            ->add('enabled', null, array(
+                'label' => 'qcm_core.label.enabled'
             ));
     }
 
