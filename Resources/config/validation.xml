@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+                                        http://symfony.com/schema/dic/services/constraint-mapping-1.0.xsd">
+    <class name="Qcm\Bundle\CoreBundle\Model\User">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">email</option>
+            <option name="errorPath">email</option>
+            <option name="message">qcm_core.email.already_used</option>
+            <option name="groups">
+                <value>QcmCoreRegistration</value>
+            </option>
+        </constraint>
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.username.empty</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">qcm_core.username.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">qcm_core.username.long</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.email.empty</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">qcm_core.email.short</option>
+                <option name="max">254</option>
+                <option name="maxMessage">qcm_core.email.long</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">qcm_core.email.invalid</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="plainPassword">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.password.empty</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="max">4096</option>
+                <option name="minMessage">qcm_core.password.short</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

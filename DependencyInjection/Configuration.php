@@ -46,6 +46,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('validation_groups')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('user')->defaultValue('QcmCoreRegistration')->end()
                     ->end()
                 ->end()
 

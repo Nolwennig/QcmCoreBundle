@@ -11,14 +11,26 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class UserFormType extends AbstractType
 {
+    /**
+     * @var string $class
+     */
     private $class;
 
     /**
-     * @param string $class The User class name
+     * @var string $validationGroup
      */
-    public function __construct($class)
+    private $validationGroup;
+
+    /**
+     * Construct
+     *
+     * @param string $class
+     * @param string $validationGroup
+     */
+    public function __construct($class, $validationGroup)
     {
         $this->class = $class;
+        $this->validationGroup = $validationGroup;
     }
 
     /**
@@ -50,7 +62,8 @@ class UserFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->class
+            'data_class' => $this->class,
+            'validation_groups' =>$this->validationGroup
         ));
     }
 

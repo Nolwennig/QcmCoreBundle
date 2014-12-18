@@ -1,0 +1,14 @@
+qcm_core:
+    username:
+        empty: Veuillez renseigner un nom d'utilisateur
+        short: Le nom d'utilisateur est trop court
+        long: Le nom d'utilisateur est trop long
+    password:
+        empty: Veuillez renseigner un mot de passe
+        short: Le mot de passe est trop court
+    email:
+        empty: Veuillez renseigner une adresse mail
+        already_used: Cette adresse mail est déjà utilisé
+        short: Le nom d'utilisateur est trop court
+        long: Le nom d'utilisateur est trop long
+        invalid: L'adresse mail utilisé est invalide

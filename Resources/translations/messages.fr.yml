@@ -7,9 +7,15 @@ qcm_core:
         delete: Supprimer
         export: Exporter
         print: Imprimer
+        return: Retour
 
     label:
         username: Nom d'utilisateur
         password: Mot de passe
         password_confirmation: Confirmation du mot de passe
         email: Email
+        enabled: Actif
+        logout: Déconnexion
+
+    user:
+        enabled: "{0}Non|{1}Oui"
