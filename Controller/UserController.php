@@ -23,7 +23,7 @@ class UserController extends ResourceController
             $form = $this->createForm('qcm_core_user_profile', $resource);
         }
 
-        if ($resource ==  $this->container->get('security.context')->getToken()->getUser()) {
+        if ($resource == $this->container->get('security.context')->getToken()->getUser() && $form->has('enabled')) {
             $form->remove('enabled');
         }
 
