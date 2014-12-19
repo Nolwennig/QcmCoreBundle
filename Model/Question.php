@@ -35,6 +35,11 @@ abstract class Question implements QuestionInterface
      */
     protected $enabled;
 
+    public function __construct()
+    {
+        $this->enabled = true;
+    }
+
     /**
      * Get id
      *

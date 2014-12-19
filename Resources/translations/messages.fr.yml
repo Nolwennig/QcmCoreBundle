@@ -1,5 +1,6 @@
 qcm_core:
     bad_credentials: Utilisateur ou mot de passe incorrect
+    enabled: "{0}Non|{1}Oui"
     button:
         save: Enregistrer
         confirm: Confirmer
@@ -18,10 +19,15 @@ qcm_core:
         password_confirmation: Confirmation du mot de passe
         email: Email
         enabled: Actif
+        answer_type: Type de réponse
+        question: Question
+        category: Catégorie
         name: Nom
+        title: Titre
         description: Déscription
         logout: Déconnexion
         actions: Actions
-
-    user:
-        enabled: "{0}Non|{1}Oui"
+        choose_option: Choisissez une option
+        text: Champs texte
+        radio: Bouton radio
+        checkbox: Case à cocher

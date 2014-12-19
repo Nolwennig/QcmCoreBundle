@@ -81,7 +81,7 @@ abstract class User implements AdvancedUserInterface, UserInterface
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->enabled = false;
+        $this->enabled = true;
         $this->locked = false;
         $this->expired = false;
         $this->roles = array();
