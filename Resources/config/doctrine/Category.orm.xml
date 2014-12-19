@@ -7,5 +7,9 @@
     <mapped-superclass name="Qcm\Bundle\CoreBundle\Entity\Category">
         <field name="name" column="name" type="string" length="50" />
         <field name="description" column="description" type="text" />
+
+        <!--<one-to-many field="questions" target-entity="Acme\AcmeBundle\Entity\Question" mapped-by="category">
+            <cascade><cascade-all/></cascade>
+        </one-to-many>-->
     </mapped-superclass>
 </doctrine-mapping>

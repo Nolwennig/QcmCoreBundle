@@ -54,7 +54,11 @@
 {% endmacro %}
 
 {% macro submit(value, class='btn-primary', glyphicon='glyphicon-save') %}
-    <input type="submit" class="btn {{ class }}" value="{{ value is empty ? 'qcm_core.button.save'|trans : value }}">
+    {% import _self as actions %}
+        <button type="submit" class="btn {{ class }}">
+            {{ value is empty ? 'qcm_core.button.save'|trans : value }}
+            {{ actions.glyphicon(glyphicon) }}
+        </button>
 {% endmacro %}
 
 {% macro glyphicon(glyphicon) %}

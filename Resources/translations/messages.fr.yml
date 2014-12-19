@@ -1,6 +1,8 @@
 qcm_core:
+    bad_credentials: Utilisateur ou mot de passe incorrect
     button:
         save: Enregistrer
+        confirm: Confirmer
         add: Ajouter
         cancel: Annuler
         edit: Editer
