@@ -4,6 +4,7 @@ qcm_core:
         add: Ajouter
         cancel: Annuler
         edit: Editer
+        show: Voir
         delete: Supprimer
         export: Exporter
         print: Imprimer
@@ -15,6 +16,8 @@ qcm_core:
         password_confirmation: Confirmation du mot de passe
         email: Email
         enabled: Actif
+        name: Nom
+        description: Déscription
         logout: Déconnexion
         actions: Actions
 

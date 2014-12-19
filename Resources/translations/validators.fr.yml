@@ -12,3 +12,11 @@ qcm_core:
         short: Le nom d'utilisateur est trop court
         long: Le nom d'utilisateur est trop long
         invalid: L'adresse mail utilisé est invalide
+    name:
+        empty: Veuillez renseigner un nom
+        already_used: Ce nom est déjà utilisé
+        short: Le nom est trop court
+        long: Le nom est trop long
+    description:
+        empty: Veuillez renseigner une déscription
+        short: La déscription est trop court

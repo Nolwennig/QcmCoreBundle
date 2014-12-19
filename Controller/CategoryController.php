@@ -8,6 +8,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 /**
  * Class QuestionController
  */
-class QuestionController extends ResourceController
+class CategoryController extends ResourceController
 {
 }

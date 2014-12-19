@@ -20,5 +20,11 @@
             <argument>%qcm_core.validation_group.user_profile%</argument>
             <tag name="form.type" alias="qcm_core_user_profile" />
         </service>
+
+        <service id="qcm_core.form.type.category" class="%qcm_core.form.type.category.class%">
+            <argument>%qcm_core.model.category.class%</argument>
+            <argument>%qcm_core.validation_group.category%</argument>
+            <tag name="form.type" alias="qcm_core_category" />
+        </service>
     </services>
 </container>

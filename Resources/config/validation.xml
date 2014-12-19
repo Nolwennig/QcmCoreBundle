@@ -69,4 +69,47 @@
             </constraint>
         </property>
     </class>
+
+    <class name="Qcm\Bundle\CoreBundle\Entity\Category">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="errorPath">name</option>
+            <option name="message">qcm_core.category.already_used</option>
+            <option name="groups">
+                <value>QcmCoreCategory</value>
+            </option>
+        </constraint>
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.name.empty</option>
+                <option name="groups">
+                    <value>QcmCoreCategory</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">qcm_core.name.short</option>
+                <option name="max">50</option>
+                <option name="maxMessage">qcm_core.name.long</option>
+                <option name="groups">
+                    <value>QcmCoreRegistration</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="description">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.description.empty</option>
+                <option name="groups">
+                    <value>QcmCoreCategory</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">qcm_core.description.short</option>
+                <option name="groups">
+                    <value>QcmCoreCategory</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
 </constraint-mapping>
