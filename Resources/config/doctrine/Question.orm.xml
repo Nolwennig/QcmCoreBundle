@@ -9,7 +9,11 @@
         <field name="type" column="type" type="string" length="20" />
         <field name="enabled" column="enabled" type="boolean" />
 
-        <!--<many-to-one target-entity="Acme\AcmeBundle\Entity\Category" field="category" inversed-by="questions">
+        <!--<one-to-many field="answers" target-entity="Acme\AcmeBundle\Entity\Answer" mapped-by="question">
+            <cascade><cascade-all/></cascade>
+        </one-to-many>
+
+        <many-to-one target-entity="Acme\AcmeBundle\Entity\Category" field="category" inversed-by="questions">
             <join-column name="category_id" nullable="false" />
         </many-to-one>-->
     </mapped-superclass>

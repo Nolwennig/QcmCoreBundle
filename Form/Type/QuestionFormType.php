@@ -62,7 +62,7 @@ class QuestionFormType extends AbstractType
                 'label' => 'qcm_core.label.enabled'
             ))
             ->add('answers', 'collection', array(
-                'label'        => 'qcm_core.label.answers',
+                'label'        => false,
                 'type'         => 'qcm_core_answer',
                 'allow_add'    => true,
                 'allow_delete' => true,
@@ -78,7 +78,8 @@ class QuestionFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'validation_groups' =>$this->validationGroup
+            'validation_groups' =>$this->validationGroup,
+            'cascade_validation' => true,
         ));
     }
 

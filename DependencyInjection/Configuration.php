@@ -26,11 +26,39 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('user_class')->isRequired()->cannotBeEmpty()->end()
             ->end();
 
+        $this->addConfigurationSection($rootNode);
         $this->addClassesSection($rootNode);
 
         return $treeBuilder;
     }
 
+    /**
+     * Add configuration section
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    public function addConfigurationSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('configuration')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('max_questions')->defaultValue(40)->end()
+                        ->scalarNode('answers_max')->defaultValue(5)->end()
+                        ->scalarNode('strict')->defaultTrue()->end()
+                        ->scalarNode('timeout')->defaultValue(1200)->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
+     * Add classes section
+     *
+     * @param ArrayNodeDefinition $node
+     */
     public function addClassesSection(ArrayNodeDefinition $node)
     {
         $node
