@@ -5,8 +5,8 @@ namespace Qcm\Bundle\CoreBundle\Controller;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 
 /**
- * Class QuestionController
+ * Class AnswerController
  */
-class QuestionController extends ResourceController
+class AnswerController extends ResourceController
 {
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Qcm\Bundle\CoreBundle\Entity\Answer">
+        <field name="value" column="value" type="text" />
+        <field name="valid" column="valid" type="boolean" />
+
+        <!--<many-to-one target-entity="Acme\AcmeBundle\Entity\Question" field="question" inversed-by="answers">
+            <join-column name="question_id" nullable="false" />
+        </many-to-one>-->
+    </mapped-superclass>
+</doctrine-mapping>

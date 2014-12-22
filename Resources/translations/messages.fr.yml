@@ -19,6 +19,8 @@ qcm_core:
         password_confirmation: Confirmation du mot de passe
         email: Email
         enabled: Actif
+        is_valid: est correct
+        value: Valeur
         answer_type: Type de réponse
         question: Question
         category: Catégorie

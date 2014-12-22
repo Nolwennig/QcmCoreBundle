@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('user_profile')->defaultValue('QcmCoreProfile')->end()
                         ->scalarNode('category')->defaultValue('QcmCoreCategory')->end()
                         ->scalarNode('question')->defaultValue('QcmCoreQuestion')->end()
+                        ->scalarNode('answer')->defaultValue('QcmCoreAnswer')->end()
                     ->end()
                 ->end()
 
