@@ -60,6 +60,14 @@ class QuestionFormType extends AbstractType
             ))
             ->add('enabled', null, array(
                 'label' => 'qcm_core.label.enabled'
+            ))
+            ->add('answers', 'collection', array(
+                'label'        => 'qcm_core.label.answers',
+                'type'         => 'qcm_core_answer',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'cascade_validation' => true
             ));
     }
 

@@ -2,6 +2,9 @@
 
 namespace Qcm\Bundle\CoreBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Qcm\Component\Answer\Model\AnswerInterface;
 use Qcm\Component\Category\Model\CategoryInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
 
@@ -35,9 +38,20 @@ abstract class Question implements QuestionInterface
      */
     protected $enabled;
 
+    /**
+     * Answers
+     *
+     * @var Collection|AnswerInterface[]
+     */
+    protected $answers;
+
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->enabled = true;
+        $this->answers = new ArrayCollection();
     }
 
     /**
@@ -156,5 +170,71 @@ abstract class Question implements QuestionInterface
     public function isEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Get answers associated with this question
+     *
+     * @return AnswerInterface[]|Collection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * Does a answer belongs to question?
+     *
+     * @param AnswerInterface $answer
+     *
+     * @return Boolean
+     */
+    public function hasAnswer(AnswerInterface $answer)
+    {
+        return $this->answers->contains($answer);
+    }
+
+    /**
+     * Is there any answers in question?
+     *
+     * @return bool
+     */
+    public function hasAnswers()
+    {
+        return !$this->answers->isEmpty();
+    }
+
+    /**
+     * Add a answer to question
+     *
+     * @param AnswerInterface $answer
+     *
+     * @return $this
+     */
+    public function addAnswer(AnswerInterface $answer)
+    {
+        if (! $this->hasAnswer($answer)) {
+            $answer->setQuestion($this);
+            $this->answers->add($answer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove answer from question
+     *
+     * @param AnswerInterface $answer
+     *
+     * @return $this
+     */
+    public function removeAnswer(AnswerInterface $answer)
+    {
+        if ($this->hasAnswer($answer)) {
+            $this->answers->removeElement($answer);
+            $answer->setQuestion(null);
+        }
+
+        return $this;
     }
 }
