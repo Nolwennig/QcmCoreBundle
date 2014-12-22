@@ -112,4 +112,67 @@
             </constraint>
         </property>
     </class>
+
+    <class name="Qcm\Bundle\CoreBundle\Entity\Question">
+        <property name="category">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.category.empty</option>
+                <option name="groups">
+                    <value>QcmCoreQuestion</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.name.empty</option>
+                <option name="groups">
+                    <value>QcmCoreQuestion</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">qcm_core.name.short</option>
+                <option name="max">50</option>
+                <option name="maxMessage">qcm_core.name.long</option>
+                <option name="groups">
+                    <value>QcmCoreQuestion</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="type">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.type.empty</option>
+                <option name="groups">
+                    <value>QcmCoreQuestion</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="answers">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.answer.empty</option>
+                <option name="groups">
+                    <value>QcmCoreQuestion</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Qcm\Bundle\CoreBundle\Entity\Answer">
+        <property name="question">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.question.empty</option>
+                <option name="groups">
+                    <value>QcmCoreAnswer</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="value">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.value.empty</option>
+                <option name="groups">
+                    <value>QcmCoreAnswer</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
 </constraint-mapping>

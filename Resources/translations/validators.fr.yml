@@ -20,3 +20,9 @@ qcm_core:
     description:
         empty: Veuillez renseigner une déscription
         short: La déscription est trop court
+    type:
+        empty: Veuillez choisir un type de réponse
+    category:
+        empty: Veuillez choisir une catégorie
+    value:
+        empty: Veuillez renseigner une valeur

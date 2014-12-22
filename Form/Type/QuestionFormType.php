@@ -6,6 +6,7 @@ use Qcm\Component\Question\Model\QuestionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class QuestionFormType
@@ -66,8 +67,10 @@ class QuestionFormType extends AbstractType
                 'type'         => 'qcm_core_answer',
                 'allow_add'    => true,
                 'allow_delete' => true,
-                'by_reference' => false,
-                'cascade_validation' => true
+                'cascade_validation' => true,
+                'constraints' => array(
+                    new NotBlank()
+                )
             ));
     }
 

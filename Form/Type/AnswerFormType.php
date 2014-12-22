@@ -41,14 +41,11 @@ class AnswerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            /*->add('question', 'entity', array(
-                'empty_value' => 'qcm_core.label.choose_option',
-                'class' => 'Qcm\Bundle\PublicBundle\Entity\Question',
-                'property' => 'name',
-                'label' => 'qcm_core.label.question'
-            ))*/
-            ->add('value', null, array(
-                'label' => 'qcm_core.label.value'
+            ->add('value', 'textarea', array(
+                'label' => 'qcm_core.label.value',
+                'attr' => array(
+                    'rows' => 5
+                )
             ))
             ->add('valid', null, array(
                 'label' => 'qcm_core.label.is_valid'

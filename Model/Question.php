@@ -91,11 +91,11 @@ abstract class Question implements QuestionInterface
     /**
      * Set category
      *
-     * @param CategoryInterface $category
+     * @param CategoryInterface|null $category
      *
      * @return $this
      */
-    public function setCategory(CategoryInterface $category)
+    public function setCategory(CategoryInterface $category = null)
     {
         $this->category = $category;
 
@@ -232,7 +232,6 @@ abstract class Question implements QuestionInterface
     {
         if ($this->hasAnswer($answer)) {
             $this->answers->removeElement($answer);
-            $answer->setQuestion(null);
         }
 
         return $this;
