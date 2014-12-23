@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         $this->addConfigurationSection($rootNode);
+        $this->addServicesSection($rootNode);
         $this->addClassesSection($rootNode);
 
         return $treeBuilder;
@@ -45,10 +46,32 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('configuration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('max_questions')->defaultValue(40)->end()
-                        ->scalarNode('answers_max')->defaultValue(5)->end()
-                        ->scalarNode('strict')->defaultTrue()->end()
-                        ->scalarNode('timeout')->defaultValue(1200)->end()
+                        ->scalarNode('max_questions')->cannotBeEmpty()->defaultValue(40)->end()
+                        ->scalarNode('question_level')->cannotBeEmpty()->defaultValue(5)->end()
+                        ->scalarNode('answers_max')->cannotBeEmpty()->defaultValue(5)->end()
+                        ->scalarNode('strict')->cannotBeEmpty()->defaultTrue()->end()
+                        ->scalarNode('timeout')->cannotBeEmpty()->defaultValue(1200)->end()
+                        ->scalarNode('timeout_per_question')->cannotBeEmpty()->defaultValue(0)->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
+     * Add services section
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function addServicesSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('service')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('configuration')->defaultValue('qcm.configuration.default')->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();

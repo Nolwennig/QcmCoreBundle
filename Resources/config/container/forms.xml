@@ -30,6 +30,7 @@
         <service id="qcm_core.form.type.question" class="%qcm_core.form.type.question.class%">
             <argument>%qcm_core.model.question.class%</argument>
             <argument>%qcm_core.validation_group.question%</argument>
+            <argument type="service" id="qcm.configuration" />
             <tag name="form.type" alias="qcm_core_question" />
         </service>
 

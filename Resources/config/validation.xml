@@ -152,6 +152,7 @@
                 <option name="message">qcm_core.answer.empty</option>
                 <option name="groups">
                     <value>QcmCoreQuestion</value>
+                    <value>QcmCoreAnswer</value>
                 </option>
             </constraint>
         </property>

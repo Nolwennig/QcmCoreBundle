@@ -39,6 +39,11 @@ abstract class Question implements QuestionInterface
     protected $enabled;
 
     /**
+     * @var integer $level
+     */
+    protected $level;
+
+    /**
      * Answers
      *
      * @var Collection|AnswerInterface[]
@@ -170,6 +175,28 @@ abstract class Question implements QuestionInterface
     public function isEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set level of question
+     *
+     * @param integer $level
+     *
+     * @return $this
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * Get level
+     *
+     * @return string
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     /**

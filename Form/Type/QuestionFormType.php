@@ -2,9 +2,13 @@
 
 namespace Qcm\Bundle\CoreBundle\Form\Type;
 
+use Qcm\Component\Answer\Model\AnswerInterface;
+use Qcm\Component\Configuration\Model\ConfigurationInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -24,15 +28,22 @@ class QuestionFormType extends AbstractType
     private $validationGroup;
 
     /**
+     * @var ConfigurationInterface $configuration
+     */
+    private $configuration;
+
+    /**
      * Construct
      *
-     * @param string $class
-     * @param string $validationGroup
+     * @param string                 $class
+     * @param string                 $validationGroup
+     * @param ConfigurationInterface $configuration
      */
-    public function __construct($class, $validationGroup)
+    public function __construct($class, $validationGroup, ConfigurationInterface $configuration)
     {
         $this->class = $class;
         $this->validationGroup = $validationGroup;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -67,11 +78,30 @@ class QuestionFormType extends AbstractType
                 'type'         => 'qcm_core_answer',
                 'allow_add'    => true,
                 'allow_delete' => true,
-                'cascade_validation' => true,
-                'constraints' => array(
-                    new NotBlank()
-                )
+                'cascade_validation' => true
             ));
+
+        $questionLevel = $this->configuration->getQuestionLevel();
+        if (!is_null($questionLevel) || $questionLevel > 0) {
+            $choiceLevel = array();
+
+            for ($i = 1; $i <= $questionLevel; $i++) {
+                $choiceLevel[] = $i;
+            }
+
+            $builder->add('level', 'choice', array(
+                'empty_value' => 'qcm_core.label.choose_option',
+                'label' => 'qcm_core.label.question_level',
+                'choices' => $choiceLevel
+            ));
+        }
+
+        $builder->get('answers')->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            /** @var AnswerInterface $answer */
+            foreach ($event->getData() as $answer) {
+                $answer->setQuestion($event->getForm()->getParent()->getData());
+            }
+        });
     }
 
     /**

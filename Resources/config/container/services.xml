@@ -20,5 +20,9 @@
             <tag name="kernel.event_listener" event="qcm_core.user.pre_create" method="updatePassword" />
             <tag name="kernel.event_listener" event="qcm_core.user.pre_update" method="updatePassword" />
         </service>
+
+        <service id="qcm.configuration.default" class="Qcm\Bundle\CoreBundle\Configuration\Configuration" public="false">
+            <argument>%qcm.configuration%</argument>
+        </service>
     </services>
 </container>

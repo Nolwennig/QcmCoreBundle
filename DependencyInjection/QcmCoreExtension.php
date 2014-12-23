@@ -49,6 +49,8 @@ class QcmCoreExtension extends AbstractResourceExtension
         $container->setParameter('qcm.model.user.class', $config['user_class']);
         $container->setParameter('qcm.configuration', $config['configuration']);
 
+        $container->setAlias('qcm.configuration', $config['service']['configuration']);
+
         return $config;
     }
 }
