@@ -7,9 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class AnswerFormType
+ * Class UserSessionFormType
  */
-class AnswerFormType extends AbstractType
+class UserSessionFormType extends AbstractType
 {
     /**
      * @var string $class
@@ -39,14 +39,17 @@ class AnswerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('value', 'textarea', array(
-                'label' => 'qcm_core.label.value',
-                'attr' => array(
-                    'rows' => 5
-                )
+            ->add('category', 'entity', array(
+                'label' => 'qcm_core.label.category',
+                'multiple' => true,
+                'expanded' => true,
+                'empty_value' => 'qcm_core.label.choose_option',
+                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
+                'property' => 'name',
+                'mapped' => false
             ))
-            ->add('valid', null, array(
-                'label' => 'qcm_core.label.is_valid'
+            ->add('configuration', 'qcm_core_user_session_configuration', array(
+                'label' => false
             ));
     }
 
@@ -57,7 +60,8 @@ class AnswerFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'validation_groups' =>$this->validationGroup
+            'validation_groups' =>$this->validationGroup,
+            'cascade_validation' => true
         ));
     }
 
@@ -66,6 +70,6 @@ class AnswerFormType extends AbstractType
      */
     public function getName()
     {
-        return 'qcm_core_answer';
+        return 'qcm_core_user_session';
     }
 }

@@ -13,6 +13,7 @@ qcm_core:
         export: Exporter
         print: Imprimer
         return: Retour
+        add_questionnaire: Ajouter un questionnaire
 
     label:
         username: Nom d'utilisateur

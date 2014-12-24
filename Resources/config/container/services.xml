@@ -24,5 +24,9 @@
         <service id="qcm.configuration.default" class="Qcm\Bundle\CoreBundle\Configuration\Configuration" public="false">
             <argument>%qcm.configuration%</argument>
         </service>
+
+        <service id="qcm.user_session_configuration.default" class="Qcm\Component\User\Model\SessionConfiguration" public="false">
+            <argument>%qcm.configuration%</argument>
+        </service>
     </services>
 </container>
