@@ -48,6 +48,20 @@ class UserSessionConfigurationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('categories', 'entity', array(
+                'label' => 'qcm_core.label.category',
+                'multiple' => true,
+                'expanded' => true,
+                'empty_value' => 'qcm_core.label.choose_option',
+                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
+                'property' => 'name'
+            ))
+            ->add('dateStart', 'datetime', array(
+                'label' => 'qcm_core.label.date_start',
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'YYYY-MM-DD H:mm',
+            ))
             ->add('timeout', 'text', array(
                 'label' => 'qcm_core.label.timeout',
                 'required' => true

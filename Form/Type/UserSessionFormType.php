@@ -39,15 +39,6 @@ class UserSessionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', 'entity', array(
-                'label' => 'qcm_core.label.category',
-                'multiple' => true,
-                'expanded' => true,
-                'empty_value' => 'qcm_core.label.choose_option',
-                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
-                'property' => 'name',
-                'mapped' => false
-            ))
             ->add('configuration', 'qcm_core_user_session_configuration', array(
                 'label' => false
             ));

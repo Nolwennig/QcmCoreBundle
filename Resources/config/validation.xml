@@ -176,4 +176,28 @@
             </constraint>
         </property>
     </class>
+
+    <class name="Qcm\Component\User\Model\SessionConfiguration">
+        <property name="timeout">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.user_session.timeout</option>
+                <option name="groups">
+                    <value>QcmCoreUserSession</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="categories">
+            <constraint name="NotBlank">
+                <option name="message">qcm_core.user_session.timeout</option>
+                <option name="groups">
+                    <value>QcmCoreUserSession</value>
+                </option>
+            </constraint>
+            <constraint name="Collection">
+                    <constraint name="NotBlank">
+                        <option name="message">qcm_core.category.empty</option>
+                    </constraint>
+            </constraint>
+        </property>
+    </class>
 </constraint-mapping>

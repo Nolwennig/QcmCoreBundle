@@ -36,3 +36,5 @@ qcm_core:
         text: Champs texte
         radio: Bouton radio
         checkbox: Case à cocher
+        timeout: limite de temps
+        date_start: Date de début
