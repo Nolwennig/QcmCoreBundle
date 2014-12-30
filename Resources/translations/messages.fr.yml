@@ -37,4 +37,5 @@ qcm_core:
         radio: Bouton radio
         checkbox: Case à cocher
         timeout: limite de temps
+        max_questions: Nombre de questions
         date_start: Date de début

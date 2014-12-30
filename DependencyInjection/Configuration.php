@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('question_level')->cannotBeEmpty()->defaultValue(5)->end()
                         ->scalarNode('answers_max')->cannotBeEmpty()->defaultValue(5)->end()
                         ->scalarNode('strict')->cannotBeEmpty()->defaultTrue()->end()
-                        ->scalarNode('timeout')->cannotBeEmpty()->defaultValue(1200)->end()
+                        ->scalarNode('timeout')->cannotBeEmpty()->defaultValue(2400)->end()
                         ->scalarNode('timeout_per_question')->cannotBeEmpty()->defaultValue(0)->end()
                     ->end()
                 ->end()

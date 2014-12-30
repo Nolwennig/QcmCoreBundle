@@ -62,9 +62,13 @@ class UserSessionConfigurationFormType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'YYYY-MM-DD H:mm',
             ))
-            ->add('timeout', 'text', array(
+            ->add('timeout', 'integer', array(
                 'label' => 'qcm_core.label.timeout',
                 'required' => true
+            ))
+            ->add('maxQuestions', 'integer', array(
+                'label' => 'qcm_core.label.max_questions',
+                'mapped' => false
             ))
             ->add('questions', 'collection', array(
                 'label'        => false,
@@ -73,6 +77,12 @@ class UserSessionConfigurationFormType extends AbstractType
                 'allow_delete' => true,
                 'cascade_validation' => true
             ));
+
+        $builder->get('maxQuestions')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            if (isset($this->defaultConfiguration['max_questions'])) {
+                $event->setData($this->defaultConfiguration['max_questions']);
+            }
+        });
 
         $builder->get('timeout')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             if (isset($this->defaultConfiguration['timeout'])) {
