@@ -28,3 +28,5 @@ qcm_core:
         empty: Veuillez renseigner une valeur
     user_session:
         timeout: Veuillez renseigner une limite de temps
+        max_questions: Veuillez renseigner le nombre de questions
+        categories: "{1}Veuillez choisir au minimum une catégorie|[2,Inf]Veuillez choisir au minimum {{ limit }} catégories"

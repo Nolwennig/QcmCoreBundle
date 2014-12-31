@@ -161,7 +161,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('model')->end()
                                 ->scalarNode('controller')->defaultValue('Qcm\Bundle\CoreBundle\Controller\QuestionController')->end()
-                                ->scalarNode('repository')->end()
+                                ->scalarNode('repository')->defaultValue('Qcm\Bundle\CoreBundle\Doctrine\ORM\QuestionRepository')->end()
                                 ->scalarNode('form')->defaultValue('Qcm\Bundle\CoreBundle\Form\Type\QuestionFormType')->end()
                             ->end()
                         ->end()

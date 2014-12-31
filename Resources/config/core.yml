@@ -1,0 +1,7 @@
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                dql:
+                    numeric_functions:
+                        rand: DoctrineExtensions\Query\Mysql\Rand

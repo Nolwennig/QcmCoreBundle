@@ -6,7 +6,8 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "beberlei/DoctrineExtensions": "~0.1"
     },
     "minimum-stability": "dev",
     "license": "MIT",

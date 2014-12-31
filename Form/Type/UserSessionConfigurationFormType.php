@@ -68,7 +68,7 @@ class UserSessionConfigurationFormType extends AbstractType
             ))
             ->add('maxQuestions', 'integer', array(
                 'label' => 'qcm_core.label.max_questions',
-                'mapped' => false
+                'required' => true
             ))
             ->add('questions', 'collection', array(
                 'label'        => false,
@@ -97,7 +97,7 @@ class UserSessionConfigurationFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' =>$this->validationGroup,
+            'validation_groups' => $this->validationGroup,
             'data_class' => $this->class
         ));
     }

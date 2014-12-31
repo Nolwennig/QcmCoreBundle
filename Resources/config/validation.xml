@@ -186,17 +186,21 @@
                 </option>
             </constraint>
         </property>
-        <property name="categories">
+        <property name="maxQuestions">
             <constraint name="NotBlank">
-                <option name="message">qcm_core.user_session.timeout</option>
+                <option name="message">qcm_core.user_session.max_questions</option>
                 <option name="groups">
                     <value>QcmCoreUserSession</value>
                 </option>
             </constraint>
-            <constraint name="Collection">
-                    <constraint name="NotBlank">
-                        <option name="message">qcm_core.category.empty</option>
-                    </constraint>
+        </property>
+        <property name="categories">
+            <constraint name="Count">
+                <option name="min">1</option>
+                <option name="minMessage">qcm_core.user_session.categories</option>
+                <option name="groups">
+                    <value>QcmCoreUserSession</value>
+                </option>
             </constraint>
         </property>
     </class>

@@ -4,6 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <parameter key="qcm_core.question.generator">Qcm\Bundle\CoreBundle\Question\Generator\QuestionGenerator</parameter>
+    </parameters>
+
     <services>
         <service id="qcm_core.user_manager" class="Qcm\Bundle\CoreBundle\Doctrine\UserManager" public="false">
             <argument type="service" id="security.encoder_factory" />
@@ -33,6 +37,11 @@
 
         <service id="qcm.user_session_configuration.default" class="Qcm\Component\User\Model\SessionConfiguration" public="false">
             <argument>%qcm.configuration%</argument>
+        </service>
+
+        <service id="qcm_core.question.generator" class="%qcm_core.question.generator%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="kernel.event_listener" event="qcm_core.user_session.post_create" method="create" />
         </service>
     </services>
 </container>
