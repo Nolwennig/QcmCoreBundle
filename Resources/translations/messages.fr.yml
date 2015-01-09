@@ -39,3 +39,6 @@ qcm_core:
         timeout: limite de temps
         max_questions: Nombre de questions
         date_start: Date de début
+
+    questions:
+        missing: "Attention, il manque %questions% questions, vous pouvez les compléter manuellement."

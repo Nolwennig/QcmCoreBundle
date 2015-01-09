@@ -2,6 +2,7 @@
 
 namespace Qcm\Bundle\CoreBundle\Form\Type;
 
+use Qcm\Bundle\CoreBundle\Form\DataTransformer\UserConfigurationTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -89,6 +90,9 @@ class UserSessionConfigurationFormType extends AbstractType
                 $event->setData($this->defaultConfiguration['timeout']);
             }
         });
+
+        $transformer = new UserConfigurationTransformer();
+        $builder->get('questions')->addModelTransformer($transformer);
     }
 
     /**

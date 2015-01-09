@@ -41,7 +41,10 @@
 
         <service id="qcm_core.question.generator" class="%qcm_core.question.generator%">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <tag name="kernel.event_listener" event="qcm_core.user_session.post_create" method="create" />
+            <argument type="service" id="session.flash_bag" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="serializer" />
+            <tag name="kernel.event_listener" event="qcm_core.user_session.pre_create" method="create" />
         </service>
     </services>
 </container>
