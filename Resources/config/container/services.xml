@@ -6,6 +6,11 @@
 
     <parameters>
         <parameter key="qcm_core.question.generator">Qcm\Bundle\CoreBundle\Question\Generator\QuestionGenerator</parameter>
+        <parameter key="qcm_core.question.interact">Qcm\Bundle\CoreBundle\Question\QuestionInteract</parameter>
+        <parameter key="qcm_core.locator.answer_rule_checker.class">Qcm\Bundle\CoreBundle\Checker\AnswerCheckerLocator</parameter>
+        <parameter key="qcm_core.answer.checker.text.class">Qcm\Bundle\CoreBundle\Checker\TextChecker</parameter>
+        <parameter key="qcm_core.answer.checker.checkbox.class">Qcm\Bundle\CoreBundle\Checker\CheckboxChecker</parameter>
+        <parameter key="qcm_core.answer.checker.choice.class">Qcm\Bundle\CoreBundle\Checker\ChoiceChecker</parameter>
     </parameters>
 
     <services>
@@ -45,6 +50,29 @@
             <argument type="service" id="translator" />
             <argument type="service" id="serializer" />
             <tag name="kernel.event_listener" event="qcm_core.user_session.pre_create" method="create" />
+        </service>
+
+        <service id="qcm_core.question.interact" class="%qcm_core.question.interact%">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="session" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="qcm_core.locator.answer_rule_checker" class="%qcm_core.locator.answer_rule_checker.class%">
+            <argument>%qcm_core.answer_type_checkers%</argument>
+            <call method="setContainer"><argument type="service" id="service_container"/></call>
+        </service>
+
+        <service id="qcm_core.answer.checker.text" class="%qcm_core.answer.checker.text.class%">
+            <tag name="qcm_core.answer_type_checker" type="text" />
+        </service>
+
+        <service id="qcm_core.answer.checker.choice" class="%qcm_core.answer.checker.choice.class%">
+            <tag name="qcm_core.answer_type_checker" type="choice" />
+        </service>
+
+        <service id="qcm_core.answer.checker.checkbox" class="%qcm_core.answer.checker.checkbox.class%">
+            <tag name="qcm_core.answer_type_checker" type="checkbox" />
         </service>
     </services>
 </container>

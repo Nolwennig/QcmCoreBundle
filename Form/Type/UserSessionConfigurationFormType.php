@@ -3,6 +3,7 @@
 namespace Qcm\Bundle\CoreBundle\Form\Type;
 
 use Qcm\Bundle\CoreBundle\Form\DataTransformer\UserConfigurationTransformer;
+use Qcm\Component\Category\Model\CategoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -91,8 +92,15 @@ class UserSessionConfigurationFormType extends AbstractType
             }
         });
 
-        $transformer = new UserConfigurationTransformer();
-        $builder->get('questions')->addModelTransformer($transformer);
+        $builder->get('categories')->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            $categories = array();
+            /** @var CategoryInterface $category */
+            foreach ($event->getData() as $category) {
+                $categories[] = $category->getId();
+            }
+
+            $event->setData($categories);
+        });
     }
 
     /**

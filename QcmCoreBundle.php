@@ -2,9 +2,14 @@
 
 namespace Qcm\Bundle\CoreBundle;
 
+use Qcm\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterAnswerCheckersPass;
 use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class QcmCoreBundle
+ */
 class QcmCoreBundle extends Bundle
 {
     /**
@@ -22,8 +27,18 @@ class QcmCoreBundle extends Bundle
     /**
      * {@inheritdoc}
      */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterAnswerCheckersPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getBundlePrefix()
     {
-        return 'qcm_core';
+        return 'raf_core';
     }
 }

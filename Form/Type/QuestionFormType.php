@@ -65,7 +65,7 @@ class QuestionFormType extends AbstractType
                 'choices' => array(
                     QuestionInterface::TYPE_CHECKBOX => 'qcm_core.label.' . QuestionInterface::TYPE_CHECKBOX,
                     QuestionInterface::TYPE_TEXT => 'qcm_core.label.' . QuestionInterface::TYPE_TEXT,
-                    QuestionInterface::TYPE_RADIO => 'qcm_core.label.' . QuestionInterface::TYPE_RADIO,
+                    QuestionInterface::TYPE_CHOICE => 'qcm_core.label.' . QuestionInterface::TYPE_CHOICE,
                 ),
                 'label' => 'qcm_core.label.answer_type'
             ))

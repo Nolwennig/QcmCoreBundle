@@ -16,7 +16,7 @@ abstract class Question implements QuestionInterface
     /**
      * @var integer $id
      */
-    public $id;
+    protected $id;
 
     /**
      * @var string $name

@@ -1,7 +1,7 @@
 {% macro add(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-primary">
+    <a href="{{ url }}" class="btn btn-sm btn-primary">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-plus') }}
         {% endif %}
@@ -12,7 +12,7 @@
 {% macro show(url, message, glyphicon=null) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-success">
+    <a href="{{ url }}" class="btn btn-sm btn-success">
         {% if glyphicon is not null %}
             {{ actions.glyphicon(glyphicon) }}
         {% endif %}
@@ -23,7 +23,7 @@
 {% macro edit(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-info">
+    <a href="{{ url }}" class="btn btn-sm btn-info">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-pencil') }}
         {% endif %}
@@ -34,7 +34,7 @@
 {% macro delete(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-danger">
+    <a href="{{ url }}" class="btn btn-sm btn-danger">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-remove') }}
         {% endif %}
@@ -42,12 +42,12 @@
     </a>
 {% endmacro %}
 
-{% macro cancel(url, message, glyphicon=true) %}
+{% macro cancel(url, message, glyphicon='glyphicon-arrow-left') %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-default">
+    <a href="{{ url }}" class="btn btn-sm btn-default">
         {% if glyphicon == true %}
-            {{ actions.glyphicon('glyphicon-arrow-left') }}
+            {{ actions.glyphicon(glyphicon) }}
         {% endif %}
         <span>{{ message is empty ? 'qcm_core.button.cancel'|trans : message }}</span>
     </a>
@@ -55,7 +55,7 @@
 
 {% macro submit(value, class='btn-primary', glyphicon='glyphicon-save') %}
     {% import _self as actions %}
-        <button type="submit" class="btn {{ class }}">
+        <button type="submit" class="btn btn-sm {{ class }}">
             {{ value is empty ? 'qcm_core.button.save'|trans : value }}
             {{ actions.glyphicon(glyphicon) }}
         </button>
@@ -73,7 +73,7 @@
 {% macro export(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-info">
+    <a href="{{ url }}" class="btn btn-sm btn-info">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-export') }}
         {% endif %}
@@ -84,7 +84,7 @@
 {% macro print(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-info">
+    <a href="{{ url }}" class="btn btn-sm btn-info">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-print') }}
         {% endif %}

@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="qcm_core.form.type.user_profile.class">Qcm\Bundle\CoreBundle\Form\Type\UserProfileFormType</parameter>
+        <parameter key="qcm_core.form.type.reply.class">Qcm\Bundle\CoreBundle\Form\Type\ReplyFormType</parameter>
     </parameters>
 
     <services>
@@ -51,6 +52,12 @@
             <argument>%qcm_core.model.answer.class%</argument>
             <argument>%qcm_core.validation_group.answer%</argument>
             <tag name="form.type" alias="qcm_core_answer" />
+        </service>
+
+        <service id="qcm_core.form.type.reply" class="%qcm_core.form.type.reply.class%">
+            <argument type="service" id="qcm_core.locator.answer_rule_checker" />
+            <argument type="service" id="qcm_core.question.interact" />
+            <tag name="form.type" alias="qcm_core_answer_rule" />
         </service>
     </services>
 </container>

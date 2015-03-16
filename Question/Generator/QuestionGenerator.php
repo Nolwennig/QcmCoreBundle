@@ -4,6 +4,7 @@ namespace Qcm\Bundle\CoreBundle\Question\Generator;
 
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\Serializer;
+use Qcm\Bundle\CoreBundle\Doctrine\ORM\QuestionRepository;
 use Qcm\Component\Question\Generator\GeneratorInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 use Sylius\Component\Resource\Event\ResourceEvent;
@@ -68,9 +69,10 @@ class QuestionGenerator implements GeneratorInterface
     {
         $categories = $userSession->getConfiguration()->getCategories();
         $maxQuestions = $userSession->getConfiguration()->getMaxQuestions();
-        $averagePerCategory = floor($maxQuestions/$categories->count());
+        $averagePerCategory = floor($maxQuestions/count($categories));
 
         foreach ($categories as $category) {
+            /** @var QuestionRepository $questions */
             $questions = $this->manager->getRepository('QcmPublicBundle:Question')->getRandomQuestions(
                 $category,
                 $averagePerCategory
@@ -81,9 +83,10 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
-        $missingQuestions = $maxQuestions - $userSession->getConfiguration()->getQuestions()->count();
+        $missingQuestions = $maxQuestions - count($userSession->getConfiguration()->getQuestions());
 
         if ($missingQuestions > 0) {
+            /** @var QuestionRepository $questions */
             $questions = $this->manager->getRepository('QcmPublicBundle:Question')->getMissingQuestions(
                 $categories,
                 $missingQuestions,
@@ -95,7 +98,7 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
-        $missingQuestions = $maxQuestions - $userSession->getConfiguration()->getQuestions()->count();
+        $missingQuestions = $maxQuestions - count($userSession->getConfiguration()->getQuestions());
         if ($missingQuestions > 0) {
             $this->flashBag->add('danger', $this->translation->trans('qcm_core.questions.missing', array(
                 '%questions%' => $missingQuestions
