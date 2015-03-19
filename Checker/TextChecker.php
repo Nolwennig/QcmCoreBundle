@@ -20,10 +20,13 @@ class TextChecker implements AnswerCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions(ArrayCollection $answers)
+    public function getOptions($answers, $data)
     {
         return array(
-            'mapped' => false
+            'mapped' => false,
+            'label' => false,
+            'row_class' => 'col-sm-12',
+            'data' => array_shift($data)
         );
     }
 

@@ -13,7 +13,10 @@ qcm_core:
         export: Exporter
         print: Imprimer
         return: Retour
+        validate: Valider
         add_questionnaire: Ajouter un questionnaire
+        next: Suivant
+        prev: Précédent
 
     label:
         username: Nom d'utilisateur
@@ -39,6 +42,7 @@ qcm_core:
         timeout: limite de temps
         max_questions: Nombre de questions
         date_start: Date de début
+        answer_number: "Réponse %number%"
 
     questions:
         missing: "Attention, il manque %questions% questions, vous pouvez les compléter manuellement."

@@ -10,6 +10,10 @@
     </parameters>
 
     <services>
+        <service id="qcm_core.base_type_extension" class="Qcm\Bundle\CoreBundle\Form\Extension\BaseTypeExtension">
+            <tag name="form.type_extension" alias="form" />
+        </service>
+
         <service id="qcm_core.form.type.user" class="%qcm_core.form.type.user.class%">
             <argument>%qcm_core.model.user.class%</argument>
             <argument>%qcm_core.validation_group.user%</argument>

@@ -60,4 +60,15 @@ class QuestionRepository extends EntityRepository
 
         return $questions;
     }
+
+    public function getQuestionById($questionId)
+    {
+        $question = $this->createQueryBuilder('q')
+            ->where('q.id = :id')
+            ->setParameter('id', $questionId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $question;
+    }
 }

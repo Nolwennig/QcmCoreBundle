@@ -53,12 +53,29 @@
     </a>
 {% endmacro %}
 
-{% macro submit(value, class='btn-primary', glyphicon='glyphicon-save') %}
+{% macro submit(value, class='btn-primary', glyphicon='glyphicon-save', glyphbefore=false) %}
     {% import _self as actions %}
-        <button type="submit" class="btn btn-sm {{ class }}">
-            {{ value is empty ? 'qcm_core.button.save'|trans : value }}
+
+    <button type="submit" class="btn btn-sm {{ class }}">
+        {% if glyphbefore == true %}
             {{ actions.glyphicon(glyphicon) }}
-        </button>
+        {% endif %}
+        {{ value is empty ? 'qcm_core.button.save'|trans : value }}
+        {% if glyphbefore == false %}
+            {{ actions.glyphicon(glyphicon) }}
+        {% endif %}
+    </button>
+{% endmacro %}
+
+{% macro next(url, message, glyphicon='glyphicon-arrow-right') %}
+    {% import _self as actions %}
+
+    <a href="{{ url }}" class="btn btn-sm btn-success">
+        <span>{{ message is empty ? 'qcm_core.button.next'|trans : message }}</span>
+        {% if glyphicon == true %}
+            {{ actions.glyphicon(glyphicon) }}
+        {% endif %}
+    </a>
 {% endmacro %}
 
 {% macro glyphicon(glyphicon) %}

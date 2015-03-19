@@ -2,9 +2,9 @@
 
 namespace Qcm\Bundle\CoreBundle\Form\Listener;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Qcm\Bundle\CoreBundle\Question\QuestionInteract;
+use Qcm\Component\Answer\Checker\AnswerCheckerInterface;
 use Qcm\Component\Answer\Checker\AnswerCheckerLocatorInterface;
-use Qcm\Component\Answer\Model\AnswerInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -23,9 +23,9 @@ class BuildReplyFormListener implements EventSubscriberInterface
     private $checkerLocator;
 
     /**
-     * @var QuestionInterface $question
+     * @var QuestionInteract $questionInteract
      */
-    private $question;
+    private $questionInteract;
 
     /**
      * @var FormFactoryInterface $factory
@@ -36,13 +36,13 @@ class BuildReplyFormListener implements EventSubscriberInterface
      * Construct
      *
      * @param AnswerCheckerLocatorInterface $checkerLocator
-     * @param QuestionInterface             $question
+     * @param QuestionInteract              $questionInteract
      * @param FormFactoryInterface          $factory
      */
-    public function __construct(AnswerCheckerLocatorInterface $checkerLocator, QuestionInterface $question, FormFactoryInterface $factory)
+    public function __construct(AnswerCheckerLocatorInterface $checkerLocator, QuestionInteract $questionInteract, FormFactoryInterface $factory)
     {
         $this->checkerLocator = $checkerLocator;
-        $this->question = $question;
+        $this->questionInteract = $questionInteract;
         $this->factory = $factory;
     }
 
@@ -66,14 +66,14 @@ class BuildReplyFormListener implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        /** @var QuestionInterface $configuration */
+        /** @var array $configuration */
         $configuration = $event->getData();
 
         if (null === $configuration || empty($configuration['questions'])) {
             return;
         }
 
-        $this->addAnswersFields($event->getForm(), $configuration);
+        $this->addAnswersFields($event->getForm(), $this->getQuestionData());
     }
 
     /**
@@ -85,43 +85,52 @@ class BuildReplyFormListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if (empty($data) || !array_key_exists('type', $data)) {
+        if (empty($data) || !array_key_exists('answers', $data)) {
             return;
         }
 
-        $this->addAnswersFields($event->getForm(), $data['type']);
+        if (is_string($data['answers'])) {
+            $data['answers'] = array($data['answers']);
+        }
+
+        $this->addAnswersFields($event->getForm(), $data['answers']);
     }
 
     /**
      *  Add answers fields
      *
      * @param FormInterface $form
-     * @param array         $configuration
+     * @param array         $data
      */
-    protected function addAnswersFields(FormInterface $form, $configuration)
+    protected function addAnswersFields(FormInterface $form, $data)
     {
-        /** @var ArrayCollection[AnswerInterface] $answers */
-        $answers = $this->question->getAnswers();
+        $question = $this->questionInteract->getQuestion();
 
-        $form->add('answers', $this->question->getType(), $options);
+        /** @var AnswerCheckerInterface $checker */
+        $checker = $this->checkerLocator->get($question->getType());
+        $options = $checker->getOptions($question->getAnswers()->getValues(), $data);
+
+        $form->add('answers', $checker->getType(), $options)->setData($data);
     }
 
     /**
-     * Get answer data
-     *
-     * @param AnswerInterface $answer
-     * @param array           $configuration
+     * Get question data
      *
      * @return array
      */
-    private function getAnswerData(AnswerInterface $answer, $configuration)
+    private function getQuestionData()
     {
-        if (!isset($configuration['answers'][$answer->getId()])) {
-            return array();
+        $configuration = $this->questionInteract->getUserConfiguration();
+        $answer = array_search($this->questionInteract->getQuestion()->getId(), $configuration['questions']);
+        $data = array();
+
+        if (false !== $answer) {
+            $questionId = $configuration['questions'][$answer];
+            if (isset($configuration['answers'][$questionId])) {
+                $data = $configuration['answers'][$questionId]['data'];
+            }
         }
 
-        //array('choices' => $choices, 'mapped' => false, 'multiple' => false, 'expanded' => true);
-
-        return array('data' => $configuration['answers'][$answer->getId()]);
+        return $data;
     }
 }

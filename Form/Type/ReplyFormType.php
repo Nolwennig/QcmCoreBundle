@@ -20,9 +20,9 @@ class ReplyFormType extends AbstractType
     protected $checkerLocator;
 
     /**
-     * @var QuestionInterface $question
+     * @var QuestionInteract $questionInteract
      */
-    private $question;
+    private $questionInteract;
 
     /**
      * Construct
@@ -33,7 +33,7 @@ class ReplyFormType extends AbstractType
     public function __construct(AnswerCheckerLocatorInterface $checkerLocator, QuestionInteract $questionInteract)
     {
         $this->checkerLocator = $checkerLocator;
-        $this->question = $questionInteract->getQuestion();
+        $this->questionInteract = $questionInteract;
     }
 
     /**
@@ -42,7 +42,7 @@ class ReplyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addEventSubscriber(new BuildReplyFormListener($this->checkerLocator, $this->question, $builder->getFormFactory()));
+            ->addEventSubscriber(new BuildReplyFormListener($this->checkerLocator, $this->questionInteract, $builder->getFormFactory()));
     }
 
     /**
