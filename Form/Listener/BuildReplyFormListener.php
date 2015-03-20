@@ -73,6 +73,10 @@ class BuildReplyFormListener implements EventSubscriberInterface
             return;
         }
 
+        if (count($configuration['questions']) - count($configuration['answers']) == 0) {
+            $event->getForm()->remove('flag');
+        }
+
         $this->addAnswersFields($event->getForm(), $this->getQuestionData());
     }
 
@@ -127,7 +131,7 @@ class BuildReplyFormListener implements EventSubscriberInterface
         if (false !== $answer) {
             $questionId = $configuration['questions'][$answer];
             if (isset($configuration['answers'][$questionId])) {
-                $data = $configuration['answers'][$questionId]['data'];
+                $data = $configuration['answers'][$questionId];
             }
         }
 

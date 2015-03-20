@@ -103,7 +103,12 @@ class QuestionInteract
         $this->session->set('user_session', $userSession->getId());
         $this->userSessionId = $userSession->getId();
 
-        $configuration['startAt'] = new \DateTime();
+        if (empty($configuration['startAt'])) {
+            $configuration['startAt'] = new \DateTime();
+        } else {
+            $configuration['startAt'] = new \DateTime($configuration['startAt']['date']);
+        }
+
         $this->updateConfigurationSession($configuration);
     }
 
@@ -229,7 +234,7 @@ class QuestionInteract
         $questionId = array_search($lastAnswer, $configuration['questions']);
 
         if (!is_null($lastAnswer)) {
-            $this->getSpecificQuestion($questionId);
+            $this->getSpecificQuestion($questionId +1);
         }
     }
 
@@ -237,33 +242,36 @@ class QuestionInteract
      * Get specific question
      *
      * @param integer $questionId
+     *
+     * @return bool
      */
     public function getSpecificQuestion($questionId)
     {
         $configuration = $this->getUserConfiguration();
 
-        if (isset($configuration['questions'][$questionId])) {
-            $this->session->set('question', $questionId + 1);
-            $this->currentQuestion = $questionId + 1;
+        if (isset($configuration['questions'][$questionId - 1])) {
+            $this->session->set('question', $questionId);
+            $this->currentQuestion = $questionId;
+
+            return true;
         }
+
+        return false;
     }
 
     /**
      * Save current questionnaire step
      *
      * @param FormInterface $form
-     * @param string|null   $flag
      *
      * @return $this
      */
-    public function saveStep(FormInterface $form, $flag = null)
+    public function saveStep(FormInterface $form)
     {
         $question = $this->getQuestion();
         $answers = $this->userConfiguration['answers'];
-        $answers[$question->getId()] = array(
-            'data' => $form->getData(),
-            'flag' => $flag
-        );
+        $data = $form->getData();
+        $answers[$question->getId()] = $data;
 
         $this->userConfiguration['answers'] = $answers;
         $this->updateConfigurationSession($this->userConfiguration);

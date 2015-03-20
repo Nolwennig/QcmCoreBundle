@@ -5,7 +5,6 @@ namespace Qcm\Bundle\CoreBundle\Form\Type;
 use Qcm\Bundle\CoreBundle\Form\Listener\BuildReplyFormListener;
 use Qcm\Bundle\CoreBundle\Question\QuestionInteract;
 use Qcm\Component\Answer\Checker\AnswerCheckerLocatorInterface;
-use Qcm\Component\Question\Model\QuestionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -42,6 +41,9 @@ class ReplyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('flag', 'checkbox', array(
+                'label' => 'qcm_core.questions.reply_later'
+            ))
             ->addEventSubscriber(new BuildReplyFormListener($this->checkerLocator, $this->questionInteract, $builder->getFormFactory()));
     }
 

@@ -19,6 +19,6 @@ class UserSessionRepository extends EntityRepository
      */
     public function getQuestionnairesByUser(UserInterface $user)
     {
-        return $this->createPaginator(array('user' => $user));
+        return $this->findBy(array('user' => $user));
     }
 }

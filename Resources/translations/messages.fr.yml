@@ -8,6 +8,7 @@ qcm_core:
         add: Ajouter
         cancel: Annuler
         edit: Editer
+        update: Modifier
         show: Voir
         delete: Supprimer
         export: Exporter
@@ -17,6 +18,8 @@ qcm_core:
         add_questionnaire: Ajouter un questionnaire
         next: Suivant
         prev: Précédent
+        summary: Récapitulatif
+        end: Finir
 
     label:
         username: Nom d'utilisateur
@@ -46,3 +49,4 @@ qcm_core:
 
     questions:
         missing: "Attention, il manque %questions% questions, vous pouvez les compléter manuellement."
+        reply_later: Je souhaite revenir sur cette question plus tard

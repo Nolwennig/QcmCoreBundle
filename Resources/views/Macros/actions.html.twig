@@ -16,7 +16,7 @@
         {% if glyphicon is not null %}
             {{ actions.glyphicon(glyphicon) }}
         {% endif %}
-        <span>{{ message }}</span>
+        <span>{{ message is empty ? 'qcm_core.button.show'|trans : message }}</span>
     </a>
 {% endmacro %}
 
