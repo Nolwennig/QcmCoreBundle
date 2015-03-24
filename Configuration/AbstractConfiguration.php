@@ -25,14 +25,9 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     public $answersMax;
 
     /**
-     * @var boolean $isStrict
+     * @var integer $timePerQuestion
      */
-    public $isStrict;
-
-    /**
-     * @var integer $timeoutPerQuestion
-     */
-    public $timeoutPerQuestion;
+    public $timePerQuestion;
 
     /**
      * @var integer $timeout
@@ -49,8 +44,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
         $this->questionsMax = $configuration['max_questions'];
         $this->questionLevel = $configuration['question_level'];
         $this->answersMax = $configuration['answers_max'];
-        $this->isStrict = $configuration['strict'];
-        $this->timeoutPerQuestion = $configuration['timeout_per_question'];
+        $this->timePerQuestion = $configuration['time_per_question'];
         $this->timeout = $configuration['timeout'];
     }
 
@@ -85,23 +79,13 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     }
 
     /**
-     * Checks whether the number of answers per question is strict
-     *
-     * @return boolean
-     */
-    public function isStrict()
-    {
-        return $this->isStrict;
-    }
-
-    /**
-     * Get timeout per question
+     * Get time per question
      *
      * @return integer
      */
-    public function getTimeoutPerQuestion()
+    public function getTimePerQuestion()
     {
-        return $this->timeoutPerQuestion;
+        return $this->timePerQuestion;
     }
 
     /**

@@ -147,7 +147,7 @@ abstract class Question implements QuestionInterface
     public function getTypes()
     {
         return array(
-            self::TYPE_RADIO,
+            self::TYPE_CHOICE,
             self::TYPE_CHECKBOX,
             self::TYPE_TEXT
         );

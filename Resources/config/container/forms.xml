@@ -27,7 +27,7 @@
         </service>
 
         <service id="qcm_core.form.type.user_session_configuration" class="Qcm\Bundle\CoreBundle\Form\Type\UserSessionConfigurationFormType">
-            <argument>Qcm\Component\User\Model\SessionConfiguration</argument>
+            <argument>%qcm_core.model.user_session_configuration.class%</argument>
             <argument>%qcm_core.validation_group.user_session%</argument>
             <argument>%qcm.configuration%</argument>
             <tag name="form.type" alias="qcm_core_user_session_configuration" />

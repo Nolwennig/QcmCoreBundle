@@ -46,6 +46,8 @@ qcm_core:
         max_questions: Nombre de questions
         date_start: Date de début
         answer_number: "Réponse %number%"
+        time_choice: Choix de la durée
+        time_per_question: Temps par question
 
     questions:
         missing: "Attention, il manque %questions% questions, vous pouvez les compléter manuellement."

@@ -27,11 +27,6 @@ abstract class UserSession implements UserSessionInterface
     protected $configuration;
 
     /**
-     * @var boolean $valid
-     */
-    protected $valid;
-
-    /**
      * Get id
      *
      * @return integer
@@ -70,9 +65,9 @@ abstract class UserSession implements UserSessionInterface
      *
      * @param SessionConfigurationInterface|array $configuration
      *
-     * @return mixed
+     * @return $this
      */
-    public function setConfiguration($configuration)
+    public function setConfiguration(SessionConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
 

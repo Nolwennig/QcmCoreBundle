@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use JMS\Serializer\Serializer;
 use Qcm\Bundle\CoreBundle\Doctrine\ORM\QuestionRepository;
 use Qcm\Component\Question\Generator\GeneratorInterface;
+use Qcm\Component\User\Model\SessionConfigurationInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 use Sylius\Component\Resource\Event\ResourceEvent;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -32,7 +33,7 @@ class QuestionGenerator implements GeneratorInterface
     protected $translation;
 
     /**
-     * @var JsonEncoder $serializer
+     * @var Serializer $serializer
      */
     protected $serializer;
 
@@ -41,6 +42,8 @@ class QuestionGenerator implements GeneratorInterface
      *
      * @param EntityManager $manager
      * @param FlashBag      $flashBag
+     * @param Translator    $translation
+     * @param Serializer    $serializer
      */
     public function __construct(EntityManager $manager, FlashBag $flashBag, Translator $translation, Serializer $serializer)
     {
@@ -67,38 +70,40 @@ class QuestionGenerator implements GeneratorInterface
      */
     public function generate(UserSessionInterface $userSession)
     {
-        $categories = $userSession->getConfiguration()->getCategories();
-        $maxQuestions = $userSession->getConfiguration()->getMaxQuestions();
+        /** @var QuestionRepository $questionRepository */
+        $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
+        /** @var SessionConfigurationInterface $configuration */
+        $configuration = $userSession->getConfiguration();
+        $categories = $configuration->getCategories();
+        $maxQuestions = $configuration->getMaxQuestions();
         $averagePerCategory = floor($maxQuestions/count($categories));
 
         foreach ($categories as $category) {
-            /** @var QuestionRepository $questions */
-            $questions = $this->manager->getRepository('QcmPublicBundle:Question')->getRandomQuestions(
+            $questions = $questionRepository->getRandomQuestions(
                 $category,
                 $averagePerCategory
             );
 
             foreach ($questions as $question) {
-                $userSession->getConfiguration()->addQuestion($question);
+                $configuration->addQuestion($question);
             }
         }
 
-        $missingQuestions = $maxQuestions - count($userSession->getConfiguration()->getQuestions());
+        $missingQuestions = $maxQuestions - count($configuration->getQuestions());
 
         if ($missingQuestions > 0) {
-            /** @var QuestionRepository $questions */
-            $questions = $this->manager->getRepository('QcmPublicBundle:Question')->getMissingQuestions(
+            $questions = $questionRepository->getMissingQuestions(
                 $categories,
                 $missingQuestions,
-                $userSession->getConfiguration()->getQuestions()
+                $configuration->getQuestions()
             );
 
             foreach ($questions as $question) {
-                $userSession->getConfiguration()->addQuestion($question);
+                $configuration->addQuestion($question);
             }
         }
 
-        $missingQuestions = $maxQuestions - count($userSession->getConfiguration()->getQuestions());
+        $missingQuestions = $maxQuestions - count($configuration->getQuestions());
         if ($missingQuestions > 0) {
             $this->flashBag->add('danger', $this->translation->trans('qcm_core.questions.missing', array(
                 '%questions%' => $missingQuestions

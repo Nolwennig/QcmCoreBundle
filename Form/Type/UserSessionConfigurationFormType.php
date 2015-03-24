@@ -2,8 +2,6 @@
 
 namespace Qcm\Bundle\CoreBundle\Form\Type;
 
-use Qcm\Bundle\CoreBundle\Form\DataTransformer\UserConfigurationTransformer;
-use Qcm\Component\Category\Model\CategoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -64,23 +62,29 @@ class UserSessionConfigurationFormType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'YYYY-MM-DD H:mm',
             ))
+            ->add('timerChoice', 'choice', array(
+                'label' => 'qcm_core.label.time_choice',
+                'empty_value' => 'qcm_core.label.choose_option',
+                'choices' => array(
+                    'time_per_question' => 'qcm_core.label.time_per_question',
+                    'timeout' => 'qcm_core.label.timeout'
+                ),
+                'mapped' => false
+            ))
             ->add('timeout', 'integer', array(
                 'label' => 'qcm_core.label.timeout',
+                'required' => true
+            ))
+            ->add('timePerQuestion', 'integer', array(
+                'label' => 'qcm_core.label.time_per_question',
                 'required' => true
             ))
             ->add('maxQuestions', 'integer', array(
                 'label' => 'qcm_core.label.max_questions',
                 'required' => true
-            ))
-            ->add('questions', 'collection', array(
-                'label'        => false,
-                'type'         => 'qcm_core_answer',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'cascade_validation' => true
             ));
 
-        $builder->get('maxQuestions')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+        /*$builder->get('maxQuestions')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             if (isset($this->defaultConfiguration['max_questions'])) {
                 $event->setData($this->defaultConfiguration['max_questions']);
             }
@@ -92,15 +96,11 @@ class UserSessionConfigurationFormType extends AbstractType
             }
         });
 
-        $builder->get('categories')->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
-            $categories = array();
-            /** @var CategoryInterface $category */
-            foreach ($event->getData() as $category) {
-                $categories[] = $category->getId();
+        $builder->get('timePerQuestion')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            if (isset($this->defaultConfiguration['time_per_question'])) {
+                $event->setData($this->defaultConfiguration['time_per_question']);
             }
-
-            $event->setData($categories);
-        });
+        });*/
     }
 
     /**

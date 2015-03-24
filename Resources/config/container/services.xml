@@ -14,6 +14,10 @@
     </parameters>
 
     <services>
+        <service id="twig.extension.intl" class="Twig_Extensions_Extension_Intl">
+            <tag name="twig.extension" />
+        </service>
+
         <service id="qcm_core.user_manager" class="Qcm\Bundle\CoreBundle\Doctrine\UserManager" public="false">
             <argument type="service" id="security.encoder_factory" />
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -40,7 +44,7 @@
             <argument>%qcm.configuration%</argument>
         </service>
 
-        <service id="qcm.user_session_configuration.default" class="Qcm\Component\User\Model\SessionConfiguration" public="false">
+        <service id="qcm.user_session_configuration.default" class="%qcm_core.model.user_session_configuration.class%" public="false">
             <argument>%qcm.configuration%</argument>
         </service>
 

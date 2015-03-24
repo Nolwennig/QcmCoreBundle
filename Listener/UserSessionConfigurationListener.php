@@ -54,6 +54,10 @@ class UserSessionConfigurationListener
             throw new NotFoundHttpException('User not found.');
         }
 
+        if ($user->hasRole(UserInterface::ROLE_ADMIN)) {
+            throw new NotFoundHttpException("Can't create a questionnaire for administrator.");
+        }
+
         $resource->setUser($user);
     }
 }

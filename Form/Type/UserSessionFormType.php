@@ -40,7 +40,8 @@ class UserSessionFormType extends AbstractType
     {
         $builder
             ->add('configuration', 'qcm_core_user_session_configuration', array(
-                'label' => false
+                'label' => false,
+                'by_reference' => true,
             ));
     }
 
