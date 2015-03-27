@@ -34,17 +34,17 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     protected $timePerQuestion;
 
     /**
-     * @var array $categories
+     * @var ArrayCollection $categories
      */
     protected $categories;
 
     /**
-     * @var array $questions
+     * @var ArrayCollection $questions
      */
     protected $questions;
 
     /**
-     * @var array $answers
+     * @var ArrayCollection $answers
      */
     protected $answers;
 
@@ -251,7 +251,7 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     public function removeCategory(CategoryInterface $category)
     {
         if ($this->hasCategory($category)) {
-            $this->questions->removeElement($category);
+            $this->categories->removeElement($category);
         }
 
         return $this;

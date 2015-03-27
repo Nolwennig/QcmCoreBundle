@@ -38,13 +38,14 @@
             <argument type="service" id="request" />
             <argument type="service" id="qcm_core.repository.user" />
             <tag name="kernel.event_listener" event="qcm_core.user_session.pre_create" method="setUser" />
+            <tag name="kernel.event_listener" event="qcm_core.user_session.pre_update" method="updateConfiguration" />
         </service>
 
         <service id="qcm.configuration.default" class="Qcm\Bundle\CoreBundle\Configuration\Configuration" public="false">
             <argument>%qcm.configuration%</argument>
         </service>
 
-        <service id="qcm.user_session_configuration.default" class="%qcm_core.model.user_session_configuration.class%" public="false">
+        <service id="qcm.user_session_configuration.default" class="Qcm\Bundle\PublicBundle\Entity\UserSessionConfiguration" public="false">
             <argument>%qcm.configuration%</argument>
         </service>
 

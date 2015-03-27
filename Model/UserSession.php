@@ -77,7 +77,7 @@ abstract class UserSession implements UserSessionInterface
     /**
      * Get the user configuration
      *
-     * @return array
+     * @return SessionConfigurationInterface
      */
     public function getConfiguration()
     {

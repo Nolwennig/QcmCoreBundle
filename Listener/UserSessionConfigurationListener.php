@@ -1,6 +1,7 @@
 <?php
 
 namespace Qcm\Bundle\CoreBundle\Listener;
+
 use Qcm\Component\User\Model\UserInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -59,5 +60,17 @@ class UserSessionConfigurationListener
         }
 
         $resource->setUser($user);
+    }
+
+    /**
+     * Update configuration
+     *
+     * @param ResourceEvent $event
+     */
+    public function updateConfiguration(ResourceEvent $event)
+    {
+        $resource = $event->getSubject();
+        $configuration = clone $resource->getConfiguration();
+        $resource->setConfiguration($configuration);
     }
 }

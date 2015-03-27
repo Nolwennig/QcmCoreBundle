@@ -7,9 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class UserSessionFormType
+ * Class UserSessionConfigurationFormType
  */
-class UserSessionFormType extends AbstractType
+class UserSessionCategoryFormType extends AbstractType
 {
     /**
      * @var string $class
@@ -39,8 +39,9 @@ class UserSessionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('configuration', 'qcm_core_user_session_configuration', array(
+            ->add('name', 'hidden', array(
                 'label' => false,
+                'required' => true
             ));
     }
 
@@ -50,9 +51,8 @@ class UserSessionFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->class,
-            'validation_groups' =>$this->validationGroup,
-            'cascade_validation' => true
+            'validation_groups' => $this->validationGroup,
+            'data_class' => $this->class
         ));
     }
 
@@ -61,6 +61,6 @@ class UserSessionFormType extends AbstractType
      */
     public function getName()
     {
-        return 'qcm_core_user_session';
+        return 'qcm_core_session_category';
     }
 }
