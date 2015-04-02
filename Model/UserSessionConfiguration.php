@@ -44,6 +44,11 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     protected $questions;
 
     /**
+     * @var ArrayCollection $questionLevel
+     */
+    protected $questionsLevel;
+
+    /**
      * @var ArrayCollection $answers
      */
     protected $answers;
@@ -70,6 +75,7 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     {
         $this->categories = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->questionsLevel = array();
         $this->answers = new ArrayCollection();
     }
 
@@ -319,6 +325,30 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Set questions level
+     *
+     * @param array $questionsLevel
+     *
+     * @return $this
+     */
+    public function setQuestionsLevel($questionsLevel)
+    {
+        $this->questionsLevel = $questionsLevel;
+
+        return $this;
+    }
+
+    /**
+     * Get questions level
+     *
+     * @return array
+     */
+    public function getQuestionsLevel()
+    {
+        return $this->questionsLevel;
     }
 
     /**

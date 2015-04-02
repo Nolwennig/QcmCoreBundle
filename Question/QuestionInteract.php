@@ -214,8 +214,8 @@ class QuestionInteract
     {
         $questionId = $this->currentQuestion - 1;
 
-        $question = $this->manager->getRepository('QcmPublicBundle:Question')->getQuestionById(
-            $this->userConfiguration['questions'][$questionId]
+        $question = $this->manager->getRepository('QcmPublicBundle:Question')->findOneBy(
+            array('id' => $this->userConfiguration['questions'][$questionId])
         );
 
         return $question;

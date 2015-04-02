@@ -8,7 +8,7 @@
         <field name="name" column="name" type="text" />
         <field name="type" column="type" type="string" length="20" />
         <field name="enabled" column="enabled" type="boolean" />
-        <field name="level" column="level" type="integer" nullable="true" />
+        <field name="level" column="level" type="string" length="255" nullable="true" />
 
         <!--<one-to-many field="answers" target-entity="Acme\AcmeBundle\Entity\Answer" mapped-by="question">
             <cascade><cascade-all/></cascade>

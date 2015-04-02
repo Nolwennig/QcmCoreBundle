@@ -178,23 +178,6 @@
     </class>
 
     <class name="Qcm\Bundle\CoreBundle\Entity\UserSessionConfiguration">
-        <constraint name="Callback">validate</constraint>
-        <property name="timeout">
-            <constraint name="NotBlank">
-                <option name="message">qcm_core.user_session.timeout</option>
-                <option name="groups">
-                    <value>QcmCoreUserSession</value>
-                </option>
-            </constraint>
-        </property>
-        <property name="timePerQuestion">
-            <constraint name="NotBlank">
-                <option name="message">qcm_core.user_session.timeout</option>
-                <option name="groups">
-                    <value>QcmCoreUserSession</value>
-                </option>
-            </constraint>
-        </property>
         <property name="maxQuestions">
             <constraint name="NotBlank">
                 <option name="message">qcm_core.user_session.max_questions</option>

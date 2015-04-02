@@ -4,6 +4,7 @@ namespace Qcm\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -48,12 +49,16 @@ class UserSessionConfigurationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('categories', 'collection', array(
-                'label'        => false,
-                'type'         => 'qcm_core_session_category',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'cascade_validation' => true
+            ->add('categories', 'entity', array(
+                'label' => 'qcm_core.label.category',
+                'empty_value' => 'qcm_core.label.choose_option',
+                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
+                'property' => 'name',
+                'expanded' => true,
+                'multiple' => true,
+                'attr' => array(
+                    'class' => 'form-control'
+                )
             ))
             ->add('dateStart', 'datetime', array(
                 'label' => 'qcm_core.label.date_start',
@@ -81,18 +86,20 @@ class UserSessionConfigurationFormType extends AbstractType
             ->add('maxQuestions', 'integer', array(
                 'label' => 'qcm_core.label.max_questions',
                 'required' => true
-            ))
-            /*->add('questions', 'collection', array(
-                'label'        => false,
-                'type'         => 'qcm_core_question',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'cascade_validation' => true
-            ))*/;
+            ));
 
-        /*$builder->get('categories')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            var_dump($event->getData()->toArray());die;
-        });*/
+        $questionLevel = $this->defaultConfiguration['question_level'];
+
+        if (!empty($questionLevel)) {
+            $builder->add('questionsLevel', 'choice', array(
+                'empty_value' => 'qcm_core.label.choose_option',
+                'label' => 'qcm_core.label.questions_level',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => $questionLevel
+            ));
+        }
 
         $builder->get('maxQuestions')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             if (is_null($event->getData()) && isset($this->defaultConfiguration['max_questions'])) {
@@ -109,6 +116,46 @@ class UserSessionConfigurationFormType extends AbstractType
         $builder->get('timePerQuestion')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             if (is_null($event->getData()) && isset($this->defaultConfiguration['time_per_question'])) {
                 $event->setData($this->defaultConfiguration['time_per_question']);
+            }
+        });
+
+        $builder->get('timerChoice')->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            if (is_null($event->getData())) {
+                $event->getForm()->addError(new FormError('qcm_core.user_session.timer_choice'));
+            }
+        });
+
+        $builder->get('timeout')->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $timerChoice = $event->getForm()->getParent()->get('timerChoice')->getData();
+            if (!is_null($timerChoice) &&
+                'timeout' === $timerChoice &&
+                is_null($event->getData())
+            ) {
+                $event->getForm()->addError(new FormError('qcm_core.user_session.timeout'));
+            }
+        });
+
+        $builder->get('timePerQuestion')->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $timerChoice = $event->getForm()->getParent()->get('timerChoice')->getData();
+            if (!is_null($timerChoice) &&
+                'time_per_question' === $timerChoice &&
+                is_null($event->getData())
+            ) {
+                $event->getForm()->addError(new FormError('qcm_core.user_session.timeout'));
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+            $timerChoice = $event->getForm()->get('timerChoice')->getData();
+
+            if (is_null($timerChoice)) {
+                return;
+            }
+
+            if ('time_per_question' === $timerChoice) {
+                $event->getData()->setTimeout(null);
+            } else {
+                $event->getData()->setTimePerQuestion(null);
             }
         });
     }

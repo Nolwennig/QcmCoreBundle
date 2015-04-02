@@ -30,3 +30,4 @@ qcm_core:
         timeout: Veuillez renseigner une limite de temps
         max_questions: Veuillez renseigner le nombre de questions
         categories: "{1}Veuillez choisir au minimum une catégorie|[2,Inf]Veuillez choisir au minimum {{ limit }} catégories"
+        timer_choice: Veuillez choisir un type de durée

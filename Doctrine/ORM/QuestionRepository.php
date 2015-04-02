@@ -14,10 +14,11 @@ class QuestionRepository extends EntityRepository
      *
      * @param integer $category
      * @param integer $limit
+     * @param array   $questionsLevel
      *
      * @return array
      */
-    public function getRandomQuestions($category, $limit)
+    public function getRandomQuestions($category, $limit, $questionsLevel = array())
     {
         $query = $this->createQueryBuilder('q')
             ->addSelect('RAND() as HIDDEN rand')
@@ -26,13 +27,18 @@ class QuestionRepository extends EntityRepository
             ->setParameter('category', $category)
             ->orderBy('rand');
 
+        if (!empty($questionsLevel)) {
+            $query->andWhere('q.level IN(:level)')
+                ->setParameter('level', $questionsLevel);
+        }
+
         if (!is_null($limit)) {
             $query->setMaxResults($limit);
         }
 
-        $categories = $query->getQuery()->getResult();
+        $questions = $query->getQuery()->getResult();
 
-        return $categories;
+        return $questions;
     }
 
     /**
@@ -41,12 +47,13 @@ class QuestionRepository extends EntityRepository
      * @param array   $categories
      * @param integer $limit
      * @param array   $questions
+     * @param array   $questionsLevel
      *
      * @return array
      */
-    public function getMissingQuestions($categories, $limit, $questions)
+    public function getMissingQuestions($categories, $limit, $questions, $questionsLevel = array())
     {
-        $questions = $this->createQueryBuilder('q')
+        $query = $this->createQueryBuilder('q')
             ->addSelect('RAND() as HIDDEN rand')
             ->where('q.category IN(:category)')
             ->andWhere('q.enabled = 1')
@@ -54,21 +61,15 @@ class QuestionRepository extends EntityRepository
             ->setParameter('category', $categories)
             ->setParameter('questions', $questions)
             ->setMaxResults($limit)
-            ->orderBy('rand')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('rand');
+
+        if (!empty($questionsLevel)) {
+            $query->andWhere('q.level IN(:level)')
+                ->setParameter('level', $questionsLevel);
+        }
+
+        $questions = $query->getQuery()->getResult();
 
         return $questions;
-    }
-
-    public function getQuestionById($questionId)
-    {
-        $question = $this->createQueryBuilder('q')
-            ->where('q.id = :id')
-            ->setParameter('id', $questionId)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $question;
     }
 }

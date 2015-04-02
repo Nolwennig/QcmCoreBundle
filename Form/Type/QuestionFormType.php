@@ -82,17 +82,11 @@ class QuestionFormType extends AbstractType
 
         $questionLevel = $this->configuration->getQuestionLevel();
         if (!is_null($questionLevel) || $questionLevel > 0) {
-            $choiceLevel = array();
-
-            for ($i = 1; $i <= $questionLevel; $i++) {
-                $choiceLevel[] = $i;
-            }
-
             $builder->add('level', 'choice', array(
                 'empty_value' => 'qcm_core.label.choose_option',
                 'label' => 'qcm_core.label.question_level',
                 'required' => false,
-                'choices' => $choiceLevel
+                'choices' => $questionLevel
             ));
         }
 

@@ -75,13 +75,15 @@ class QuestionGenerator implements GeneratorInterface
         /** @var SessionConfigurationInterface $configuration */
         $configuration = $userSession->getConfiguration();
         $categories = $configuration->getCategories();
+        $questionsLevel = $configuration->getQuestionsLevel();
         $maxQuestions = $configuration->getMaxQuestions();
         $averagePerCategory = floor($maxQuestions/count($categories));
 
         foreach ($categories as $category) {
             $questions = $questionRepository->getRandomQuestions(
                 $category,
-                $averagePerCategory
+                $averagePerCategory,
+                $questionsLevel
             );
 
             foreach ($questions as $question) {
@@ -95,7 +97,8 @@ class QuestionGenerator implements GeneratorInterface
             $questions = $questionRepository->getMissingQuestions(
                 $categories,
                 $missingQuestions,
-                $configuration->getQuestions()
+                $configuration->getQuestions(),
+                $questionsLevel
             );
 
             foreach ($questions as $question) {

@@ -1,3 +1,11 @@
+qcm_core:
+    configuration:
+        max_questions: 40
+        answers_max: 5
+        question_level: [ 1, 2, 3, 4, 5 ]
+        timeout: 2400
+        time_per_question: 60
+
 doctrine:
     orm:
         entity_managers:
