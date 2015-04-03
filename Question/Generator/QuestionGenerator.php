@@ -3,7 +3,6 @@
 namespace Qcm\Bundle\CoreBundle\Question\Generator;
 
 use Doctrine\ORM\EntityManager;
-use JMS\Serializer\Serializer;
 use Qcm\Bundle\CoreBundle\Doctrine\ORM\QuestionRepository;
 use Qcm\Component\Question\Generator\GeneratorInterface;
 use Qcm\Component\User\Model\SessionConfigurationInterface;
@@ -33,24 +32,17 @@ class QuestionGenerator implements GeneratorInterface
     protected $translation;
 
     /**
-     * @var Serializer $serializer
-     */
-    protected $serializer;
-
-    /**
      * Construct
      *
      * @param EntityManager $manager
      * @param FlashBag      $flashBag
      * @param Translator    $translation
-     * @param Serializer    $serializer
      */
-    public function __construct(EntityManager $manager, FlashBag $flashBag, Translator $translation, Serializer $serializer)
+    public function __construct(EntityManager $manager, FlashBag $flashBag, Translator $translation)
     {
         $this->manager = $manager;
         $this->flashBag = $flashBag;
         $this->translation = $translation;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -70,20 +62,65 @@ class QuestionGenerator implements GeneratorInterface
      */
     public function generate(UserSessionInterface $userSession)
     {
-        /** @var QuestionRepository $questionRepository */
-        $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
         /** @var SessionConfigurationInterface $configuration */
         $configuration = $userSession->getConfiguration();
-        $categories = $configuration->getCategories();
-        $questionsLevel = $configuration->getQuestionsLevel();
-        $maxQuestions = $configuration->getMaxQuestions();
-        $averagePerCategory = floor($maxQuestions/count($categories));
 
-        foreach ($categories as $category) {
+        $this->cleanQuestions($configuration)
+            ->getRandomQuestion($configuration)
+            ->getMissingQuestions($configuration);
+    }
+
+    /**
+     * Clean questions
+     *
+     * @param SessionConfigurationInterface $configuration
+     *
+     * @return $this
+     */
+    public function cleanQuestions(SessionConfigurationInterface $configuration)
+    {
+        $categoriesId = array();
+        $questionsLevel = $configuration->getQuestionsLevel();
+
+        foreach ($configuration->getCategories() as $category) {
+            $categoriesId[] = $category->getId();
+        }
+
+        foreach ($configuration->getQuestions() as $question) {
+            if (!in_array($question->getCategory()->getId(), $categoriesId)) {
+                $configuration->removeQuestion($question);
+            } else if (!empty($questionsLevel) && !in_array($question->getLevel(), $questionsLevel)) {
+                $configuration->removeQuestion($question);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get random questions by category
+     *
+     * @param SessionConfigurationInterface $configuration
+     *
+     * @return $this
+     */
+    public function getRandomQuestion(SessionConfigurationInterface $configuration)
+    {
+        /** @var QuestionRepository $questionRepository */
+        $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
+        $maxQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
+        $averagePerCategory = floor($maxQuestions/count($configuration->getCategories()));
+
+        $questionsId = array_map(function($question) {
+            return $question->getId();
+        }, $configuration->getQuestions()->toArray());
+
+        foreach ($configuration->getCategories() as $category) {
             $questions = $questionRepository->getRandomQuestions(
                 $category,
                 $averagePerCategory,
-                $questionsLevel
+                $configuration->getQuestionsLevel(),
+                $questionsId
             );
 
             foreach ($questions as $question) {
@@ -91,14 +128,33 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
-        $missingQuestions = $maxQuestions - count($configuration->getQuestions());
+        return $this;
+    }
+
+    /**
+     * Get missing questions
+     *
+     * @param SessionConfigurationInterface $configuration
+     *
+     * @return $this
+     */
+    public function getMissingQuestions(SessionConfigurationInterface $configuration)
+    {
+        /** @var QuestionRepository $questionRepository */
+        $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
+        $missingQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
 
         if ($missingQuestions > 0) {
+            $questionsId = array_map(function($question) {
+                return $question->getId();
+            }, $configuration->getQuestions()->toArray());
+
             $questions = $questionRepository->getMissingQuestions(
-                $categories,
+                $configuration->getCategories(),
                 $missingQuestions,
                 $configuration->getQuestions(),
-                $questionsLevel
+                $configuration->getQuestionsLevel(),
+                $questionsId
             );
 
             foreach ($questions as $question) {
@@ -106,11 +162,14 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
-        $missingQuestions = $maxQuestions - count($configuration->getQuestions());
+        $missingQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
+
         if ($missingQuestions > 0) {
             $this->flashBag->add('danger', $this->translation->trans('qcm_core.questions.missing', array(
                 '%questions%' => $missingQuestions
             )));
         }
+
+        return $this;
     }
 }

@@ -108,13 +108,19 @@ class UserSessionConfigurationFormType extends AbstractType
         });
 
         $builder->get('timeout')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            if (is_null($event->getData()) && isset($this->defaultConfiguration['timeout'])) {
+            if (is_null($event->getForm()->getParent()->getData()) &&
+                is_null($event->getData()) &&
+                isset($this->defaultConfiguration['timeout'])
+            ) {
                 $event->setData($this->defaultConfiguration['timeout']);
             }
         });
 
         $builder->get('timePerQuestion')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            if (is_null($event->getData()) && isset($this->defaultConfiguration['time_per_question'])) {
+            if (is_null($event->getForm()->getParent()->getData()) &&
+                is_null($event->getData()) &&
+                isset($this->defaultConfiguration['time_per_question'])
+            ) {
                 $event->setData($this->defaultConfiguration['time_per_question']);
             }
         });

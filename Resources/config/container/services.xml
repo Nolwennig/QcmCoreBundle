@@ -53,8 +53,8 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="session.flash_bag" />
             <argument type="service" id="translator" />
-            <argument type="service" id="serializer" />
             <tag name="kernel.event_listener" event="qcm_core.user_session.pre_create" method="create" />
+            <tag name="kernel.event_listener" event="qcm_core.user_session.pre_update" method="create" />
         </service>
 
         <service id="qcm_core.question.interact" class="%qcm_core.question.interact%">

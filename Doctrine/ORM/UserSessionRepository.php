@@ -21,4 +21,20 @@ class UserSessionRepository extends EntityRepository
     {
         return $this->findBy(array('user' => $user));
     }
+
+    /**
+     * Get user session configuration
+     *
+     * @param integer $userSessionId
+     *
+     * @return mixed
+     */
+    public function getUserSessionConfiguration($userSessionId)
+    {
+        $resource = $this->findOneBy(array(
+            'id' => $userSessionId
+        ));
+
+        return $resource->getConfiguration();
+    }
 }

@@ -196,7 +196,7 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
      */
     public function getTimePerQuestion()
     {
-        $this->timePerQuestion;
+        return $this->timePerQuestion;
     }
 
     /**
@@ -304,7 +304,7 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
      */
     public function addQuestion(QuestionInterface $question)
     {
-        if (! $this->hasQuestion($question)) {
+        if (!$this->hasQuestion($question)) {
             $this->questions->add($question);
         }
 
@@ -323,6 +323,18 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
         if ($this->hasQuestion($question)) {
             $this->questions->removeElement($question);
         }
+
+        return $this;
+    }
+
+    /**
+     * Erase questions
+     *
+     * @return $this
+     */
+    public function eraseQuestions()
+    {
+        $this->questions = new ArrayCollection();
 
         return $this;
     }
