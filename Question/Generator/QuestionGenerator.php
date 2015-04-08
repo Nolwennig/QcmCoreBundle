@@ -94,6 +94,17 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
+        if ($configuration->getMaxQuestions() < $configuration->getQuestions()->count()) {
+            $questions = $configuration->getQuestions()->toArray();
+            shuffle($questions);
+
+            $questions = array_slice($questions, 0, $configuration->getQuestions()->count() - $configuration->getMaxQuestions());
+
+            foreach ($questions as $question) {
+                $configuration->removeQuestion($question);
+            }
+        }
+
         return $this;
     }
 
@@ -117,7 +128,7 @@ class QuestionGenerator implements GeneratorInterface
 
         foreach ($configuration->getCategories() as $category) {
             $questions = $questionRepository->getRandomQuestions(
-                $category,
+                $category->getId(),
                 $averagePerCategory,
                 $configuration->getQuestionsLevel(),
                 $questionsId
@@ -145,16 +156,11 @@ class QuestionGenerator implements GeneratorInterface
         $missingQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
 
         if ($missingQuestions > 0) {
-            $questionsId = array_map(function($question) {
-                return $question->getId();
-            }, $configuration->getQuestions()->toArray());
-
             $questions = $questionRepository->getMissingQuestions(
                 $configuration->getCategories(),
                 $missingQuestions,
                 $configuration->getQuestions(),
-                $configuration->getQuestionsLevel(),
-                $questionsId
+                $configuration->getQuestionsLevel()
             );
 
             foreach ($questions as $question) {

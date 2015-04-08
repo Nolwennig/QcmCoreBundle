@@ -37,4 +37,25 @@ class UserSessionRepository extends EntityRepository
 
         return $resource->getConfiguration();
     }
+
+    /**
+     * Get questionnaire details
+     *
+     * @param integer $userSessionId
+     *
+     * @return mixed
+     */
+    public function getQuestionnaireDetails($userSessionId)
+    {
+        $questionnaire = $this->createQueryBuilder('us')
+            ->select('us, c, a')
+            ->leftJoin('us.configuration', 'c')
+            ->leftJoin('s.answers', 'a')
+            ->where('us.id = :id')
+            ->setParameter('id', $userSessionId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $questionnaire;
+    }
 }

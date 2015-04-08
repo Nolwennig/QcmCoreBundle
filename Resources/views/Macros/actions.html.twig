@@ -1,10 +1,8 @@
-{% macro add(url, message, glyphicon=true) %}
+{% macro add(url, message, glyphicon='glyphicon-plus') %}
     {% import _self as actions %}
 
     <a href="{{ url }}" class="btn btn-sm btn-primary">
-        {% if glyphicon == true %}
-            {{ actions.glyphicon('glyphicon-plus') }}
-        {% endif %}
+        {{ actions.glyphicon(glyphicon) }}
         <span>{{ message is empty ? 'qcm_core.button.add'|trans : message }}</span>
     </a>
 {% endmacro %}

@@ -70,7 +70,10 @@ class UserSessionConfigurationListener
     public function updateConfiguration(ResourceEvent $event)
     {
         $resource = $event->getSubject();
-        $configuration = clone $resource->getConfiguration();
-        $resource->setConfiguration($configuration);
+
+        if ($resource instanceof UserSessionInterface) {
+            $configuration = clone $resource->getConfiguration();
+            $resource->setConfiguration($configuration);
+        }
     }
 }

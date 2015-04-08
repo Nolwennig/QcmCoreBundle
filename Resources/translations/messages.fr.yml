@@ -51,5 +51,5 @@ qcm_core:
         questions_level: Niveau des questions
 
     questions:
-        missing: "Attention, il manque %questions% questions, vous pouvez les compléter manuellement."
+        missing: "Attention, il manque %questions% questions, vous ne pourrez pas démarrer le questionnaire s'il est incomplet."
         reply_later: Je souhaite revenir sur cette question plus tard

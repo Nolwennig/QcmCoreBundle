@@ -22,7 +22,8 @@ class QuestionRepository extends EntityRepository
     public function getRandomQuestions($category, $limit, $questionsLevel = array(), $excludeQuestions = array())
     {
         $query = $this->createQueryBuilder('q')
-            ->addSelect('RAND() as HIDDEN rand')
+            ->addSelect('RAND() as HIDDEN rand, q, a')
+            ->leftJoin('q.answers', 'a')
             ->where('q.category = :category')
             ->andWhere('q.enabled = 1')
             ->setParameter('category', $category)
@@ -54,11 +55,10 @@ class QuestionRepository extends EntityRepository
      * @param integer $limit
      * @param array   $questions
      * @param array   $questionsLevel
-     * @param array   $excludeQuestions
      *
      * @return array
      */
-    public function getMissingQuestions($categories, $limit, $questions, $questionsLevel = array(), $excludeQuestions = array())
+    public function getMissingQuestions($categories, $limit, $questions, $questionsLevel = array())
     {
         $query = $this->createQueryBuilder('q')
             ->addSelect('RAND() as HIDDEN rand')
@@ -73,11 +73,6 @@ class QuestionRepository extends EntityRepository
         if (!empty($questionsLevel)) {
             $query->andWhere('q.level IN(:level)')
                 ->setParameter('level', $questionsLevel);
-        }
-
-        if (!empty($excludeQuestions)) {
-            $query->andWhere('q.id NOT IN(:questions)')
-                ->setParameter('questions', $excludeQuestions);
         }
 
         $questions = $query->getQuery()->getResult();
