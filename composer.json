@@ -3,11 +3,12 @@
     "description": "QCM Core bundle for Symfony2",
     "type": "symfony-bundle",
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "sylius/resource-bundle": "~0.11@dev",
+        "beberlei/DoctrineExtensions": "*@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "beberlei/DoctrineExtensions": "~0.1"
+        "phpunit/phpunit": "*"
     },
     "minimum-stability": "dev",
     "license": "MIT",
