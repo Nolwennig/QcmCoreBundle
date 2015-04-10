@@ -79,5 +79,9 @@
         <service id="qcm_core.answer.checker.checkbox" class="%qcm_core.answer.checker.checkbox.class%">
             <tag name="qcm_core.answer_type_checker" type="checkbox" />
         </service>
+
+        <service id="qcm_core.category.listener" class="Qcm\Bundle\CoreBundle\Listener\CategoryListener">
+            <tag name="kernel.event_listener" event="qcm_core.category.pre_delete" method="preDelete" />
+        </service>
     </services>
 </container>

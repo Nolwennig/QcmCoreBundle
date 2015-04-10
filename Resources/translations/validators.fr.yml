@@ -31,3 +31,11 @@ qcm_core:
         max_questions: Veuillez renseigner le nombre de questions
         categories: "{1}Veuillez choisir au minimum une catégorie|[2,Inf]Veuillez choisir au minimum {{ limit }} catégories"
         timer_choice: Veuillez choisir un type de durée
+    question:
+        type:
+            text:
+                length: Il ne peut y avoir qu'une seule réponse pour le type de champs texte
+                valid: La réponse pour le type de champs texte doit obligatoirement être correct
+            checkbox: ~
+            choice:
+                count: Il ne peut y avoir qu'un seule réponse valide pour le type de champs radio

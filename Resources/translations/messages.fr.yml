@@ -2,6 +2,7 @@ qcm_core:
     bad_credentials: Utilisateur ou mot de passe incorrect
     enabled: "{0}Non|{1}Oui"
     question_level: "{0}Aucun niveau|[1,Inf]Niveau %level%"
+    confirm_delete: Confirmer la suppression?
     button:
         save: Enregistrer
         confirm: Confirmer
@@ -40,7 +41,7 @@ qcm_core:
         actions: Actions
         choose_option: Choisissez une option
         text: Champs texte
-        radio: Bouton radio
+        choice: Bouton radio
         checkbox: Case à cocher
         timeout: limite de temps
         max_questions: Nombre de questions

@@ -2,11 +2,13 @@
 
 namespace Qcm\Bundle\CoreBundle\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Qcm\Component\Answer\Model\AnswerInterface;
 use Qcm\Component\Configuration\Model\ConfigurationInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -91,6 +93,31 @@ class QuestionFormType extends AbstractType
         }
 
         $builder->get('answers')->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            $type = $event->getForm()->getParent()->get('type');
+
+            if (QuestionInterface::TYPE_TEXT === $type->getData()) {
+                if ($event->getData()->count() > 1) {
+                    $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_TEXT . '.length'));
+                } else if (!$event->getData()->first()->isValid()) {
+                    $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_TEXT . '.valid'));
+                }
+            }
+
+            if (QuestionInterface::TYPE_CHOICE === $type->getData()) {
+                if ($event->getData()->count() > 1) {
+                    $isValid = 0;
+                    foreach ($event->getData() as $answer) {
+                        if ($answer->isValid()) {
+                            $isValid++;
+                        }
+                    }
+
+                    if ($isValid > 1) {
+                        $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_CHOICE . '.count'));
+                    }
+                }
+            }
+
             /** @var AnswerInterface $answer */
             foreach ($event->getData() as $answer) {
                 $answer->setQuestion($event->getForm()->getParent()->getData());
