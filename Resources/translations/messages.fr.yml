@@ -21,6 +21,7 @@ qcm_core:
         prev: Précédent
         summary: Récapitulatif
         end: Finir
+        add_answer: Ajouter une réponse
 
     label:
         username: Nom d'utilisateur
@@ -54,3 +55,7 @@ qcm_core:
     questions:
         missing: "Attention, il manque %questions% questions, vous ne pourrez pas démarrer le questionnaire s'il est incomplet."
         reply_later: Je souhaite revenir sur cette question plus tard
+
+    user_session:
+        minutes: minutes
+        seconds: secondes

@@ -22,7 +22,8 @@ class QuestionRepository extends EntityRepository
     public function getRandomQuestions($category, $limit, $questionsLevel = array(), $excludeQuestions = array())
     {
         $query = $this->createQueryBuilder('q')
-            ->addSelect('RAND() as HIDDEN rand, q, a')
+            ->addSelect('RAND() as HIDDEN rand, q, c, a')
+            ->leftJoin('q.category', 'c')
             ->leftJoin('q.answers', 'a')
             ->where('q.category = :category')
             ->andWhere('q.enabled = 1')

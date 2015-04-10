@@ -119,23 +119,29 @@ class QuestionGenerator implements GeneratorInterface
     {
         /** @var QuestionRepository $questionRepository */
         $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
-        $maxQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
-        $averagePerCategory = floor($maxQuestions/count($configuration->getCategories()));
+        $maxQuestions = $configuration->getMaxQuestions() - $configuration->getQuestions()->count();
+
+        $averagePerCategory = $maxQuestions;
+        if ($maxQuestions >= $configuration->getCategories()->count()) {
+            $averagePerCategory = floor($maxQuestions/$configuration->getCategories()->count());
+        }
 
         $questionsId = array_map(function($question) {
             return $question->getId();
         }, $configuration->getQuestions()->toArray());
 
         foreach ($configuration->getCategories() as $category) {
-            $questions = $questionRepository->getRandomQuestions(
-                $category->getId(),
-                $averagePerCategory,
-                $configuration->getQuestionsLevel(),
-                $questionsId
-            );
+            if ($configuration->getMaxQuestions() - $configuration->getQuestions()->count() > 0) {
+                $questions = $questionRepository->getRandomQuestions(
+                    $category->getId(),
+                    $averagePerCategory,
+                    $configuration->getQuestionsLevel(),
+                    $questionsId
+                );
 
-            foreach ($questions as $question) {
-                $configuration->addQuestion($question);
+                foreach ($questions as $question) {
+                    $configuration->addQuestion($question);
+                }
             }
         }
 
@@ -153,7 +159,7 @@ class QuestionGenerator implements GeneratorInterface
     {
         /** @var QuestionRepository $questionRepository */
         $questionRepository = $this->manager->getRepository('QcmPublicBundle:Question');
-        $missingQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
+        $missingQuestions = $configuration->getMaxQuestions() - $configuration->getQuestions()->count();
 
         if ($missingQuestions > 0) {
             $questions = $questionRepository->getMissingQuestions(
@@ -168,7 +174,7 @@ class QuestionGenerator implements GeneratorInterface
             }
         }
 
-        $missingQuestions = $configuration->getMaxQuestions() - count($configuration->getQuestions());
+        $missingQuestions = $configuration->getMaxQuestions() - $configuration->getQuestions()->count();
 
         if ($missingQuestions > 0) {
             $this->flashBag->add('danger', $this->translation->trans('qcm_core.questions.missing', array(

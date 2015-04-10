@@ -39,3 +39,5 @@ qcm_core:
             checkbox: ~
             choice:
                 count: Il ne peut y avoir qu'un seule réponse valide pour le type de champs radio
+    answer:
+        empty: Veuillez ajouter une réponse

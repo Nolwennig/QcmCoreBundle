@@ -3,6 +3,7 @@
 namespace Qcm\Bundle\CoreBundle\Doctrine\ORM;
 
 use Qcm\Component\User\Model\UserInterface;
+use Qcm\Component\User\Model\UserSessionInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 /**
@@ -19,7 +20,22 @@ class UserSessionRepository extends EntityRepository
      */
     public function getQuestionnairesByUser(UserInterface $user)
     {
-        return $this->findBy(array('user' => $user));
+        $questionnaires = $this->createQueryBuilder('us')
+            ->where('us.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        $resource = array();
+
+        /** @var UserSessionInterface $questionnaire */
+        foreach ($questionnaires as $questionnaire) {
+            if ($questionnaire->getConfiguration()->getMaxQuestions() - $questionnaire->getConfiguration()->getQuestions()->count() == 0) {
+                $resource[] = $questionnaire;
+            }
+        }
+
+        return $resource;
     }
 
     /**

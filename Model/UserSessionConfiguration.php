@@ -69,6 +69,11 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     protected $endAt;
 
     /**
+     * @var boolean $flag
+     */
+    protected $flag;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -364,6 +369,32 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     }
 
     /**
+     * Erase answers
+     *
+     * @return $this
+     */
+    public function eraseAnswers()
+    {
+        $this->answers = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * Set answers
+     *
+     * @param ArrayCollection $answers
+     *
+     * @return $this
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+
+        return $this;
+    }
+
+    /**
      * Get answers associated with this user session
      *
      * @return AnswerInterface[]|ArrayCollection
@@ -473,5 +504,25 @@ abstract class UserSessionConfiguration implements SessionConfigurationInterface
     public function getEndAt()
     {
         return $this->endAt;
+    }
+
+    /**
+     * Set flag
+     *
+     * @param boolean $flag
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+    }
+
+    /**
+     * Is flag
+     *
+     * @return boolean
+     */
+    public function isFlag()
+    {
+        return $this->flag;
     }
 }

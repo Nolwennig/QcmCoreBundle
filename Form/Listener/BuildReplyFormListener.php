@@ -5,7 +5,7 @@ namespace Qcm\Bundle\CoreBundle\Form\Listener;
 use Qcm\Bundle\CoreBundle\Question\QuestionInteract;
 use Qcm\Component\Answer\Checker\AnswerCheckerInterface;
 use Qcm\Component\Answer\Checker\AnswerCheckerLocatorInterface;
-use Qcm\Component\Question\Model\QuestionInterface;
+use Qcm\Component\User\Model\SessionConfigurationInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -66,14 +66,14 @@ class BuildReplyFormListener implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        /** @var array $configuration */
+        /** @var SessionConfigurationInterface $configuration */
         $configuration = $event->getData();
 
-        if (null === $configuration || empty($configuration['questions'])) {
+        if (empty($configuration) || empty($configuration) && $event->getForm()->has('answers')) {
             return;
         }
 
-        if (count($configuration['questions']) - count($configuration['answers']) == 0) {
+        if ($configuration instanceof SessionConfigurationInterface && $configuration->getQuestions()->count() - count($configuration->getAnswers()) == 0) {
             $event->getForm()->remove('flag');
         }
 
@@ -97,7 +97,7 @@ class BuildReplyFormListener implements EventSubscriberInterface
             $data['answers'] = array($data['answers']);
         }
 
-        $this->addAnswersFields($event->getForm(), $data['answers']);
+        //$this->addAnswersFields($event->getForm(), $data['answers']);
     }
 
     /**
@@ -106,7 +106,7 @@ class BuildReplyFormListener implements EventSubscriberInterface
      * @param FormInterface $form
      * @param array         $data
      */
-    protected function addAnswersFields(FormInterface $form, $data)
+    protected function addAnswersFields(FormInterface $form, $data = array())
     {
         $question = $this->questionInteract->getQuestion();
 
@@ -125,16 +125,8 @@ class BuildReplyFormListener implements EventSubscriberInterface
     private function getQuestionData()
     {
         $configuration = $this->questionInteract->getUserConfiguration();
-        $answer = array_search($this->questionInteract->getQuestion()->getId(), $configuration['questions']);
-        $data = array();
+        $answer = $configuration->getAnswers()->get($this->questionInteract->getQuestion()->getId());
 
-        if (false !== $answer) {
-            $questionId = $configuration['questions'][$answer];
-            if (isset($configuration['answers'][$questionId])) {
-                $data = $configuration['answers'][$questionId];
-            }
-        }
-
-        return $data;
+        return is_null($answer) ? array() : $answer;
     }
 }

@@ -95,6 +95,12 @@ class QuestionFormType extends AbstractType
         $builder->get('answers')->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
             $type = $event->getForm()->getParent()->get('type');
 
+            if ($event->getData()->isEmpty()) {
+                $type->addError(new FormError('qcm_core.answer.empty'));
+
+                return;
+            }
+
             if (QuestionInterface::TYPE_TEXT === $type->getData()) {
                 if ($event->getData()->count() > 1) {
                     $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_TEXT . '.length'));

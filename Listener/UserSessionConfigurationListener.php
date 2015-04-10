@@ -68,7 +68,7 @@ class UserSessionConfigurationListener
      * @param ResourceEvent $event
      */
     public function updateConfiguration(ResourceEvent $event)
-    {
+    {die('cool');
         $resource = $event->getSubject();
 
         if ($resource instanceof UserSessionInterface) {

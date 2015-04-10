@@ -4,6 +4,7 @@ namespace Qcm\Bundle\CoreBundle\Question;
 
 use Doctrine\ORM\EntityManager;
 use Qcm\Component\Question\Model\QuestionInterface;
+use Qcm\Component\User\Model\SessionConfigurationInterface;
 use Qcm\Component\User\Model\UserInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 use Symfony\Component\Form\FormInterface;
@@ -33,19 +34,14 @@ class QuestionInteract
     protected $manager;
 
     /**
-     * @var array $userConfiguration
+     * @var UserSessionInterface $userSession
      */
-    protected $userConfiguration;
+    protected $userSession;
 
     /**
      * @var integer $currentQuestion
      */
     protected $currentQuestion;
-
-    /**
-     * @var integer $userSessionId
-     */
-    private $userSessionId;
 
     /**
      * Construct
@@ -59,24 +55,23 @@ class QuestionInteract
         $this->request = $request->getCurrentRequest();
         $this->session = $session;
         $this->manager = $manager;
-        $this->userConfiguration = $session->get('configuration');
-        $this->userSessionId = $session->get('user_session');
+        $this->userSession = $session->get('user_session');
 
-        if (is_null($this->session->get('question'))) {
-            $this->session->set('question', 1);
+        if (!is_null($this->userSession) && is_null($this->session->get('question'))) {
+            $this->session->set('question', $this->getUserConfiguration()->getQuestions()->key());
         }
 
-        $this->currentQuestion = $this->session->get('question');
+        $this->currentQuestion = $this->session->get('question', null);
     }
 
     /**
      * Get user configuration
      *
-     * @return array
+     * @return SessionConfigurationInterface
      */
     public function getUserConfiguration()
     {
-        return $this->userConfiguration;
+        return $this->userSession->getConfiguration();
     }
 
     /**
@@ -90,7 +85,7 @@ class QuestionInteract
         $flashBag = $this->session->getBag('flashes');
         $configuration = $userSession->getConfiguration();
 
-        if (isset($configuration['endAt']) && !empty($configuration['endAt'])) {
+        if (!is_null($configuration) && !is_null($configuration->getEndAt())) {
             $flashBag->add('info', 'qcm_public.questionnaire.already_completed');
 
             return;
@@ -100,16 +95,15 @@ class QuestionInteract
             return;
         }
 
-        $this->session->set('user_session', $userSession->getId());
-        $this->userSessionId = $userSession->getId();
-
-        if (empty($configuration['startAt'])) {
-            $configuration['startAt'] = new \DateTime();
-        } else {
-            $configuration['startAt'] = new \DateTime($configuration['startAt']['date']);
+        if (is_null($configuration->getStartAt())) {
+            $configuration->setStartAt(new \DateTime());
+            $userSession->setConfiguration($configuration);
         }
 
-        $this->updateConfigurationSession($configuration);
+        $this->session->set('question', $configuration->getQuestions()->key());
+        $this->userSession = $userSession;
+
+        $this->updateSessionConfiguration();
     }
 
     /**
@@ -119,8 +113,8 @@ class QuestionInteract
      */
     public function isStarted()
     {
-        return (isset($this->userConfiguration['startAt']) && !empty($this->userConfiguration['startAt'])) &&
-            !is_null($this->session->get('configuration'));
+        return (!is_null($this->userSession) && !is_null($this->getUserConfiguration()->getStartAt())) &&
+            !is_null($this->session->get('user_session'));
     }
 
     /**
@@ -136,7 +130,7 @@ class QuestionInteract
 
         foreach ($userSessions as $userSession) {
             $configuration = $userSession->getConfiguration();
-            if (!empty($configuration['startAt']) && empty($configuration['endAt'])) {
+            if (!is_null($configuration->getStartAt()) && is_null($configuration->getEndAt())) {
                 $this->startQuestionnaire($userSession);
                 $this->getLastAnsweredQuestion();
                 break;
@@ -145,24 +139,22 @@ class QuestionInteract
     }
 
     /**
-     * Update configuration session
-     *
-     * @param array $configuration
+     * Update user session
      *
      * @return $this
      */
-    public function updateConfigurationSession($configuration)
+    public function updateSessionConfiguration()
     {
+        $configuration = $this->getUserConfiguration();
         $userSession = $this->manager->getRepository('QcmPublicBundle:UserSession')->findOneBy(array(
-            'id' => $this->userSessionId
+            'id' => $this->userSession->getId()
         ));
 
         $userSession->setConfiguration($configuration);
         $this->manager->persist($userSession);
         $this->manager->flush();
 
-        $this->session->set('configuration', $configuration);
-        $this->userConfiguration = $configuration;
+        $this->session->set('user_session', $userSession);
 
         return $this;
     }
@@ -175,8 +167,9 @@ class QuestionInteract
     public function getNextQuestion()
     {
         $nextQuestionId = $this->currentQuestion + 1;
+        $questions = $this->getUserConfiguration()->getQuestions();
 
-        if (!isset($this->userConfiguration['questions'][$nextQuestionId - 1])) {
+        if (!isset($questions[$nextQuestionId - 1])) {
             return false;
         }
 
@@ -212,13 +205,7 @@ class QuestionInteract
      */
     public function getQuestion()
     {
-        $questionId = $this->currentQuestion - 1;
-
-        $question = $this->manager->getRepository('QcmPublicBundle:Question')->findOneBy(
-            array('id' => $this->userConfiguration['questions'][$questionId])
-        );
-
-        return $question;
+        return $this->getUserConfiguration()->getQuestions()->get($this->currentQuestion);
     }
 
     /**
@@ -227,14 +214,15 @@ class QuestionInteract
     private function getLastAnsweredQuestion()
     {
         $configuration = $this->getUserConfiguration();
-        $answers = $configuration['answers'];
+        $answer = $configuration->getAnswers()->last();
 
-        end($answers);
-        $lastAnswer = key($answers);
-        $questionId = array_search($lastAnswer, $configuration['questions']);
+        $lastAnswer = null;
+        if (false !== $answer) {
+            $questionId = $answer->getQuestion()->getId();
+        }
 
         if (!is_null($lastAnswer)) {
-            $this->getSpecificQuestion($questionId +1);
+            $this->getSpecificQuestion($questionId + 1);
         }
     }
 
@@ -248,8 +236,9 @@ class QuestionInteract
     public function getSpecificQuestion($questionId)
     {
         $configuration = $this->getUserConfiguration();
+        $questions = $configuration->getQuestions();
 
-        if (isset($configuration['questions'][$questionId - 1])) {
+        if (isset($questions[$questionId])) {
             $this->session->set('question', $questionId);
             $this->currentQuestion = $questionId;
 
@@ -269,12 +258,14 @@ class QuestionInteract
     public function saveStep(FormInterface $form)
     {
         $question = $this->getQuestion();
-        $answers = $this->userConfiguration['answers'];
+        $answers = $this->getUserConfiguration()->getAnswers();
         $data = $form->getData();
+var_dump($form->get('answers')->getData());die;
         $answers[$question->getId()] = $data;
 
-        $this->userConfiguration['answers'] = $answers;
-        $this->updateConfigurationSession($this->userConfiguration);
+        $this->getUserConfiguration()->setAnswers($answers);
+
+        $this->updateSessionConfiguration();
 
         return $this;
     }
@@ -290,15 +281,17 @@ class QuestionInteract
     {
         $configuration = $this->getUserConfiguration();
 
-        if (empty($configuration['endAt'])) {
+        if (is_null($configuration->getEndAt())) {
             $now = new \DateTime();
 
             if (!is_null($endDate)) {
                 $now = $endDate;
             }
 
-            $configuration['endAt'] = $now;
-            $this->updateConfigurationSession($configuration)
+            $configuration = $this->getUserConfiguration();
+            $configuration->setEndAt($now);
+
+            $this->updateSessionConfiguration()
                 ->clearQuestionnaire();
         }
 
@@ -310,13 +303,11 @@ class QuestionInteract
      */
     public function clearQuestionnaire()
     {
-        $this->session->remove('configuration');
         $this->session->remove('user_session');
         $this->session->remove('question');
 
-        $this->userConfiguration = null;
+        $this->userSession = null;
         $this->currentQuestion = null;
-        $this->userSessionId = null;
 
         return $this;
     }

@@ -147,15 +147,6 @@
                 </option>
             </constraint>
         </property>
-        <property name="answers">
-            <constraint name="NotBlank">
-                <option name="message">qcm_core.answer.empty</option>
-                <option name="groups">
-                    <value>QcmCoreQuestion</value>
-                    <value>QcmCoreAnswer</value>
-                </option>
-            </constraint>
-        </property>
     </class>
 
     <class name="Qcm\Bundle\CoreBundle\Entity\Answer">

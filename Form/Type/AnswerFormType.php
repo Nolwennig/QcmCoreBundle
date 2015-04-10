@@ -57,7 +57,7 @@ class AnswerFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'validation_groups' =>$this->validationGroup
+            'validation_groups' => $this->validationGroup
         ));
     }
 
