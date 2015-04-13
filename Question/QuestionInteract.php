@@ -39,11 +39,6 @@ class QuestionInteract
     protected $userSession;
 
     /**
-     * @var integer $currentQuestion
-     */
-    protected $currentQuestion;
-
-    /**
      * Construct
      *
      * @param RequestStack     $request
@@ -56,12 +51,6 @@ class QuestionInteract
         $this->session = $session;
         $this->manager = $manager;
         $this->userSession = $session->get('user_session');
-
-        if (!is_null($this->userSession) && is_null($this->session->get('question'))) {
-            $this->session->set('question', $this->getUserConfiguration()->getQuestions()->key());
-        }
-
-        $this->currentQuestion = $this->session->get('question', null);
     }
 
     /**
@@ -72,6 +61,16 @@ class QuestionInteract
     public function getUserConfiguration()
     {
         return $this->userSession->getConfiguration();
+    }
+
+    /**
+     * Get current question id
+     *
+     * @return integer
+     */
+    public function getCurrentQuestion()
+    {
+        return $this->session->get('question', 0);
     }
 
     /**
@@ -100,9 +99,9 @@ class QuestionInteract
             $userSession->setConfiguration($configuration);
         }
 
-        $this->session->set('question', $configuration->getQuestions()->key());
         $this->userSession = $userSession;
 
+        $this->setQuestion($configuration->getQuestions()->key());
         $this->updateSessionConfiguration();
     }
 
@@ -145,7 +144,7 @@ class QuestionInteract
      */
     public function updateSessionConfiguration()
     {
-        $configuration = $this->getUserConfiguration();
+        $configuration = clone $this->getUserConfiguration();
         $userSession = $this->manager->getRepository('QcmPublicBundle:UserSession')->findOneBy(array(
             'id' => $this->userSession->getId()
         ));
@@ -166,15 +165,14 @@ class QuestionInteract
      */
     public function getNextQuestion()
     {
-        $nextQuestionId = $this->currentQuestion + 1;
+        $nextQuestionId = $this->getCurrentQuestion() + 1;
         $questions = $this->getUserConfiguration()->getQuestions();
 
-        if (!isset($questions[$nextQuestionId - 1])) {
+        if (!isset($questions[$nextQuestionId])) {
             return false;
         }
 
-        $this->session->set('question', $nextQuestionId);
-        $this->currentQuestion = $nextQuestionId;
+        $this->setQuestion($nextQuestionId);
 
         return $this->getQuestion();
     }
@@ -186,16 +184,35 @@ class QuestionInteract
      */
     public function getPrevQuestion()
     {
-        $prevQuestionId = $this->currentQuestion - 1;
+        $prevQuestionId = $this->getCurrentQuestion() - 1;
 
-        if ($prevQuestionId <= 0) {
+        if ($prevQuestionId < 0) {
             return $this->getQuestion();
         }
 
-        $this->session->set('question', $prevQuestionId);
-        $this->currentQuestion = $prevQuestionId;
+        if (!is_null($this->getUserConfiguration()->getTimeout())) {
+            $this->setQuestion($prevQuestionId);
+        }
 
         return $this->getQuestion();
+    }
+
+    /**
+     * Set question id
+     *
+     * @param integer $questionId
+     *
+     * @return $this
+     */
+    private function setQuestion($questionId)
+    {
+        $this->session->set('question', $questionId);
+
+        if (!is_null($this->getUserConfiguration()->getTimePerQuestion())) {
+            $this->session->set('question_timeout', new \DateTime());
+        }
+
+        return $this;
     }
 
     /**
@@ -205,7 +222,17 @@ class QuestionInteract
      */
     public function getQuestion()
     {
-        return $this->getUserConfiguration()->getQuestions()->get($this->currentQuestion);
+        return $this->getUserConfiguration()->getQuestions()->get($this->getCurrentQuestion());
+    }
+
+    /**
+     * Get current question timeout
+     *
+     * @return \DateTime|null
+     */
+    public function getQuestionTimeout()
+    {
+        return $this->session->get('question_timeout', null);
     }
 
     /**
@@ -214,16 +241,15 @@ class QuestionInteract
     private function getLastAnsweredQuestion()
     {
         $configuration = $this->getUserConfiguration();
-        $answer = $configuration->getAnswers()->last();
+        $answer = $configuration->getAnswers()->toArray();
+        end($answer);
+        key($answer);
 
-        $lastAnswer = null;
-        if (false !== $answer) {
-            $questionId = $answer->getQuestion()->getId();
+        if (empty($answer)) {
+            $answer = $this->getCurrentQuestion();
         }
 
-        if (!is_null($lastAnswer)) {
-            $this->getSpecificQuestion($questionId + 1);
-        }
+        $this->getSpecificQuestion($answer);
     }
 
     /**
@@ -238,9 +264,11 @@ class QuestionInteract
         $configuration = $this->getUserConfiguration();
         $questions = $configuration->getQuestions();
 
-        if (isset($questions[$questionId])) {
-            $this->session->set('question', $questionId);
-            $this->currentQuestion = $questionId;
+        if (!is_null($questionId) &&
+            isset($questions[$questionId]) &&
+            !is_null($this->getUserConfiguration()->getTimeout())
+        ) {
+            $this->setQuestion($questionId);
 
             return true;
         }
@@ -257,14 +285,16 @@ class QuestionInteract
      */
     public function saveStep(FormInterface $form)
     {
-        $question = $this->getQuestion();
         $answers = $this->getUserConfiguration()->getAnswers();
         $data = $form->getData();
-var_dump($form->get('answers')->getData());die;
-        $answers[$question->getId()] = $data;
+        $answersData = $form->get('answers')->getData();
 
+        if (!is_array($answersData)) {
+            $answersData = array($answersData);
+        }
+
+        $answers[$this->getCurrentQuestion()] = array_merge($answersData, $data);
         $this->getUserConfiguration()->setAnswers($answers);
-
         $this->updateSessionConfiguration();
 
         return $this;
@@ -307,7 +337,6 @@ var_dump($form->get('answers')->getData());die;
         $this->session->remove('question');
 
         $this->userSession = null;
-        $this->currentQuestion = null;
 
         return $this;
     }

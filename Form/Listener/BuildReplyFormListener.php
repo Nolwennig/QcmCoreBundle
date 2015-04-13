@@ -73,11 +73,8 @@ class BuildReplyFormListener implements EventSubscriberInterface
             return;
         }
 
-        if ($configuration instanceof SessionConfigurationInterface && $configuration->getQuestions()->count() - count($configuration->getAnswers()) == 0) {
-            $event->getForm()->remove('flag');
-        }
-
-        $this->addAnswersFields($event->getForm(), $this->getQuestionData());
+        $this->addAnswersFields($event->getForm());
+        $this->addFlag($event);
     }
 
     /**
@@ -89,32 +86,50 @@ class BuildReplyFormListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if (empty($data) || !array_key_exists('answers', $data)) {
-            return;
+        if (empty($data)) {
+            $data = array();
         }
 
-        if (is_string($data['answers'])) {
+        if (!empty($data) && is_string($data['answers'])) {
             $data['answers'] = array($data['answers']);
         }
 
-        //$this->addAnswersFields($event->getForm(), $data['answers']);
+        $this->addAnswersFields($event->getForm());
+        $this->addFlag($event);
     }
 
     /**
      *  Add answers fields
      *
      * @param FormInterface $form
-     * @param array         $data
      */
-    protected function addAnswersFields(FormInterface $form, $data = array())
+    protected function addAnswersFields(FormInterface $form)
     {
         $question = $this->questionInteract->getQuestion();
+        $data = $this->getQuestionData();
 
         /** @var AnswerCheckerInterface $checker */
         $checker = $this->checkerLocator->get($question->getType());
         $options = $checker->getOptions($question->getAnswers()->getValues(), $data);
+        $form->add('answers', $checker->getType(), $options);
+    }
 
-        $form->add('answers', $checker->getType(), $options)->setData($data);
+    /**
+     * Add flag
+     *
+     * @param FormEvent $event
+     */
+    protected function addFlag(FormEvent $event)
+    {
+        $configuration = $this->questionInteract->getUserConfiguration();
+        $data = $this->getQuestionData();
+
+        if (!is_null($configuration->getTimeout()) && $configuration->getQuestions()->count() - count($configuration->getAnswers()) > 0) {
+            $event->getForm()->add('flag', 'checkbox', array(
+                'label' => 'qcm_core.questions.reply_later',
+                'data' => isset($data['flag']) ? $data['flag'] : false
+            ));
+        }
     }
 
     /**
@@ -125,8 +140,8 @@ class BuildReplyFormListener implements EventSubscriberInterface
     private function getQuestionData()
     {
         $configuration = $this->questionInteract->getUserConfiguration();
-        $answer = $configuration->getAnswers()->get($this->questionInteract->getQuestion()->getId());
+        $data = $configuration->getAnswers()->get($this->questionInteract->getCurrentQuestion());
 
-        return is_null($answer) ? array() : $answer;
+        return is_null($data) ? array() : $data;
     }
 }

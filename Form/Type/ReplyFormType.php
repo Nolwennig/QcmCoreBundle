@@ -41,9 +41,6 @@ class ReplyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('flag', 'checkbox', array(
-                'label' => 'qcm_core.questions.reply_later'
-            ))
             ->addEventSubscriber(new BuildReplyFormListener($this->checkerLocator, $this->questionInteract, $builder->getFormFactory()));
     }
 
