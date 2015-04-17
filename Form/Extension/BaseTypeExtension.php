@@ -30,7 +30,7 @@ class BaseTypeExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(array(
             'form_group_class' => 'form-group',
-            'row_class' => 'col-sm-6',
+            'row_class' => '',
             'label_raw' => false,
         ));
     }

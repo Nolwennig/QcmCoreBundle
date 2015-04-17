@@ -51,6 +51,7 @@ qcm_core:
         time_choice: Choix de la durée
         time_per_question: Temps par question
         questions_level: Niveau des questions
+        profile: Mon profil
 
     questions:
         missing: "Attention, il manque %questions% questions, vous ne pourrez pas démarrer le questionnaire s'il est incomplet."

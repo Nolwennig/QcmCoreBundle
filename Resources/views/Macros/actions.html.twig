@@ -1,19 +1,17 @@
-{% macro add(url, message, glyphicon='glyphicon-plus') %}
+{% macro add(url, message, glyphicon='fa-plus') %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-primary">
+    <a href="{{ url }}" class="btn btn-sm btn-primary margin">
         {{ actions.glyphicon(glyphicon) }}
         <span>{{ message is empty ? 'qcm_core.button.add'|trans : message }}</span>
     </a>
 {% endmacro %}
 
-{% macro show(url, message, glyphicon=null) %}
+{% macro show(url, message, glyphicon='fa-list-alt') %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-success">
-        {% if glyphicon is not null %}
-            {{ actions.glyphicon(glyphicon) }}
-        {% endif %}
+    <a href="{{ url }}" class="btn btn-sm btn-success margin">
+        {{ actions.glyphicon(glyphicon) }}
         <span>{{ message is empty ? 'qcm_core.button.show'|trans : message }}</span>
     </a>
 {% endmacro %}
@@ -21,9 +19,9 @@
 {% macro edit(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-info">
+    <a href="{{ url }}" class="btn btn-sm btn-info margin">
         {% if glyphicon == true %}
-            {{ actions.glyphicon('glyphicon-pencil') }}
+            {{ actions.glyphicon('fa-edit') }}
         {% endif %}
         <span>{{ message is empty ? 'qcm_core.button.edit'|trans : message }}</span>
     </a>
@@ -32,7 +30,7 @@
 {% macro delete(url, message, glyphicon=true) %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-danger">
+    <a href="{{ url }}" class="btn btn-sm btn-danger margin">
         {% if glyphicon == true %}
             {{ actions.glyphicon('glyphicon-remove') }}
         {% endif %}
@@ -40,10 +38,10 @@
     </a>
 {% endmacro %}
 
-{% macro cancel(url, message, glyphicon='glyphicon-arrow-left') %}
+{% macro cancel(url, message, glyphicon='fa-arrow-left') %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-default">
+    <a href="{{ url }}" class="btn btn-sm btn-default margin">
         {% if glyphicon == true %}
             {{ actions.glyphicon(glyphicon) }}
         {% endif %}
@@ -51,7 +49,7 @@
     </a>
 {% endmacro %}
 
-{% macro submit(value, class='btn-primary', glyphicon='glyphicon-save', glyphbefore=false) %}
+{% macro submit(value, class='btn-primary', glyphicon='fa-save', glyphbefore=false) %}
     {% import _self as actions %}
 
     <button type="submit" class="btn btn-sm {{ class }}">
@@ -77,12 +75,12 @@
 {% endmacro %}
 
 {% macro glyphicon(glyphicon) %}
-    <i class="glyphicon {{ glyphicon }}"></i>
+    <i class="fa {{ glyphicon }}"></i>
 {% endmacro %}
 
 {% macro title(text, glyphicon) %}
     {% import _self as actions %}
-    <h4 class="row popover-title control-label">{{ actions.glyphicon(glyphicon) }} {{ text }}</h4>
+    <h1>{{ actions.glyphicon(glyphicon) }} {{ text }}</h1>
 {% endmacro %}
 
 {% macro export(url, message, glyphicon=true) %}
