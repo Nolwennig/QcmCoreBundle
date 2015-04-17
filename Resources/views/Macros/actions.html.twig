@@ -27,13 +27,11 @@
     </a>
 {% endmacro %}
 
-{% macro delete(url, message, glyphicon=true) %}
+{% macro delete(url, message, glyphicon='glyphicon-remove') %}
     {% import _self as actions %}
 
-    <a href="{{ url }}" class="btn btn-sm btn-danger margin">
-        {% if glyphicon == true %}
-            {{ actions.glyphicon('glyphicon-remove') }}
-        {% endif %}
+    <a href="{{ url }}" class="btn btn-sm btn-danger margin delete">
+        <i class="glyphicon {{ glyphicon }}"></i>
         <span>{{ message is empty ? 'qcm_core.button.delete'|trans : message }}</span>
     </a>
 {% endmacro %}
