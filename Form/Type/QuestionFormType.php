@@ -109,6 +109,12 @@ class QuestionFormType extends AbstractType
                 }
             }
 
+            if (QuestionInterface::TYPE_CHECKBOX === $type->getData()) {
+                if ($event->getData()->count() <= 1) {
+                    $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_CHECKBOX . '.length'));
+                }
+            }
+
             if (QuestionInterface::TYPE_CHOICE === $type->getData()) {
                 if ($event->getData()->count() > 1) {
                     $isValid = 0;
@@ -120,7 +126,11 @@ class QuestionFormType extends AbstractType
 
                     if ($isValid > 1) {
                         $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_CHOICE . '.count'));
+                    } else if ($isValid == 0) {
+                        $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_CHOICE . '.is_valid'));
                     }
+                } else {
+                    $type->addError(new FormError('qcm_core.question.type.' . QuestionInterface::TYPE_CHOICE . '.length'));
                 }
             }
 

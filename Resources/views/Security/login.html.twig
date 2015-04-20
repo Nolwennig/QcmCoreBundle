@@ -1,20 +1,18 @@
 {% extends '@QcmCore/layout-login.html.twig' %}
 
 {% block content %}
-    <div class="col-md-offset-5 col-md-3">
-        <form action="{{ path('qcm_core_security_login_check') }}" method="post" class="form-login">
-            <label for="username">{{ 'qcm_core.label.username'|trans }}</label>
-            <input type="text" class="form-control input-sm chat-input" id="username" name="_username" value="{{ last_username }}" />
+    <form action="{{ path('qcm_core_security_login_check') }}" method="post">
+        <label for="username">{{ 'qcm_core.label.username'|trans }}</label>
+        <input type="text" class="form-control input-sm chat-input" id="username" name="_username" value="{{ last_username }}" />
 
-            <label for="password">{{ 'qcm_core.label.password'|trans }}</label>
-            <input type="password" class="form-control input-sm chat-input" id="password" name="_password" />
-            {% if error %}
-                <div class="form-group has-error">
-                    <div class="control-label col-sm-12">{{ 'qcm_core.bad_credentials'|trans }}</div>
-                </div>
-            {% endif %}
-            <br />
-            {{ actions.submit('qcm_core.button.confirm'|trans, 'btn-primary', 'glyphicon-log-in') }}
-        </form>
-    </div>
+        <label for="password">{{ 'qcm_core.label.password'|trans }}</label>
+        <input type="password" class="form-control input-sm chat-input" id="password" name="_password" />
+        {% if error %}
+            <div class="form-group has-error">
+                <div class="control-label col-sm-12">{{ 'qcm_core.bad_credentials'|trans }}</div>
+            </div>
+        {% endif %}
+        <br />
+        {{ actions.submit('qcm_core.button.confirm'|trans, 'btn-primary', 'fa-sign-in') }}
+    </form>
 {% endblock %}

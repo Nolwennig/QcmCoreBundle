@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('website_name')->cannotBeEmpty()->isRequired()->end()
                 ->arrayNode('configuration')
                     ->addDefaultsIfNotSet()
                     ->children()

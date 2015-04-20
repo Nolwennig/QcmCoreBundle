@@ -45,6 +45,7 @@ class QcmCoreExtension extends AbstractResourceExtension
      */
     protected function process(array $config, ContainerBuilder $container)
     {
+        $container->setParameter('qcm_core.website_name', $config['website_name']);
         $container->setParameter('qcm.model.user.class', $config['user_class']);
         $container->setParameter('qcm.configuration', $config['configuration']);
 

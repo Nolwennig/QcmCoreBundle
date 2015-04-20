@@ -36,8 +36,11 @@ qcm_core:
             text:
                 length: Il ne peut y avoir qu'une seule réponse pour le type de champs texte
                 valid: La réponse pour le type de champs texte doit obligatoirement être correct
-            checkbox: ~
+            checkbox:
+                length: Il doit y avoir au minimum 2 réponses pour le type de champs case à cocher
             choice:
                 count: Il ne peut y avoir qu'un seule réponse valide pour le type de champs radio
+                is_valid: Veuillez sélectionner une réponse valide
+                lenght: Il doit y avoir au minimum 2 réponses pour le type de champs radio
     answer:
         empty: Veuillez ajouter une réponse
