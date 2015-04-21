@@ -2,9 +2,9 @@
 
 namespace Qcm\Bundle\CoreBundle\Statistics\Checker;
 
-use Qcm\Bundle\CoreBundle\Statistics\Model\ScoreInterface;
-use Qcm\Bundle\CoreBundle\Statistics\Model\ValidateAnswerCheckerInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
+use Qcm\Component\Statistics\Model\ScoreInterface;
+use Qcm\Component\Statistics\Model\ValidateAnswerCheckerInterface;
 
 /**
  * Class CheckboxChecker

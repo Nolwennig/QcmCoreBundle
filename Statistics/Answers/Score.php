@@ -2,7 +2,7 @@
 
 namespace Qcm\Bundle\CoreBundle\Statistics\Answers;
 
-use Qcm\Bundle\CoreBundle\Statistics\Model\ScoreInterface;
+use Qcm\Component\Statistics\Model\ScoreInterface;
 
 /**
  * Class Score

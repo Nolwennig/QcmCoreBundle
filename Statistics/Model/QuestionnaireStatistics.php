@@ -3,7 +3,9 @@
 namespace Qcm\Bundle\CoreBundle\Statistics\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Qcm\Bundle\CoreBundle\Statistics\Checker\CheckerValidatorInterface;
+use Qcm\Component\Statistics\Model\Checker\CheckerValidatorInterface;
+use Qcm\Component\Statistics\Model\ScoreInterface;
+use Qcm\Component\Statistics\Model\TemplateInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 
 /**

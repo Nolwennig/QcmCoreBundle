@@ -3,9 +3,7 @@
 namespace Qcm\Bundle\CoreBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -21,23 +19,34 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('qcm:install')
             ->setDescription('Qcm installer.');
-     }
+    }
 
     /**
-     * @see Command
+     * Execute
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Installing Qcm.</info>');
         $output->writeln('');
 
-        $this
-            ->install($input, $output)
-        ;
+        $this->install($input, $output);
 
         $output->writeln('<info>Qcm has been successfully installed.</info>');
     }
 
+    /**
+     * Install
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return $this
+     */
     protected function install(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Setting up database.</info>');
@@ -54,6 +63,12 @@ class InstallCommand extends ContainerAwareCommand
         return $this;
     }
 
+    /**
+     * Setup database
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
     protected function setupDatabase(InputInterface $input, OutputInterface $output)
     {
         $this
@@ -61,6 +76,12 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('doctrine:schema:create', $input, $output)
             ->runCommand('assets:install', $input, $output);
     }
+
+    /**
+     * Setup admin
+     *
+     * @param OutputInterface $output
+     */
     protected function setupAdmin(OutputInterface $output)
     {
         $dialog = $this->getHelperSet()->get('dialog');
@@ -93,18 +114,27 @@ class InstallCommand extends ContainerAwareCommand
         $user->setRoles(array('ROLE_ADMIN'));
         $this->getContainer()->get('qcm_core.user_manager')->updatePassword($user);
 
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $em->persist($user);
-        $em->flush();
+        $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $manager->persist($user);
+        $manager->flush();
     }
 
+    /**
+     * Run command
+     *
+     * @param string          $command
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return $this
+     * @throws \Exception
+     */
     protected function runCommand($command, InputInterface $input, OutputInterface $output)
     {
         $this
             ->getApplication()
             ->find($command)
-            ->run($input, $output)
-        ;
+            ->run($input, $output);
 
         return $this;
     }

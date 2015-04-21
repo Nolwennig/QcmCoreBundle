@@ -2,8 +2,8 @@
 
 namespace Qcm\Bundle\CoreBundle\Statistics\Answers;
 
-use Qcm\Bundle\CoreBundle\Statistics\Model\TemplateInterface;
 use Qcm\Component\Question\Model\QuestionInterface;
+use Qcm\Component\Statistics\Model\TemplateInterface;
 
 /**
  * Class Template

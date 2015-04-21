@@ -2,7 +2,8 @@
 
 namespace Qcm\Bundle\CoreBundle\Statistics\Checker;
 
-use Qcm\Bundle\CoreBundle\Statistics\Model\ValidateAnswerCheckerInterface;
+use Qcm\Component\Statistics\Model\Checker\CheckerValidatorInterface;
+use Qcm\Component\Statistics\Model\ValidateAnswerCheckerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
