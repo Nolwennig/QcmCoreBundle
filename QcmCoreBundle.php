@@ -3,6 +3,7 @@
 namespace Qcm\Bundle\CoreBundle;
 
 use Qcm\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterAnswerCheckersPass;
+use Qcm\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterValidationAnswerCheckersPass;
 use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -32,6 +33,7 @@ class QcmCoreBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterAnswerCheckersPass());
+        $container->addCompilerPass(new RegisterValidationAnswerCheckersPass());
     }
 
     /**

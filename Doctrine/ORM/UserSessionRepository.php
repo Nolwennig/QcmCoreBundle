@@ -27,11 +27,20 @@ class UserSessionRepository extends EntityRepository
             ->getResult();
 
         $resource = array();
+        $now = new \DateTime();
 
         /** @var UserSessionInterface $questionnaire */
         foreach ($questionnaires as $questionnaire) {
-            if ($questionnaire->getConfiguration()->getMaxQuestions() - $questionnaire->getConfiguration()->getQuestions()->count() == 0) {
-                $resource[] = $questionnaire;
+            $configuration = $questionnaire->getConfiguration();
+
+            if (!is_null($configuration->getEndAt())) {
+                continue;
+            }
+
+            if ($configuration->getMaxQuestions() - $configuration->getQuestions()->count() == 0) {
+                if (is_null($configuration->getStartAt()) || $configuration->getStartAt() <= $now) {
+                    $resource[] = $questionnaire;
+                }
             }
         }
 

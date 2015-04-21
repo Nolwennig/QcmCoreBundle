@@ -41,6 +41,7 @@ qcm_core:
         logout: Déconnexion
         actions: Actions
         choose_option: Choisissez une option
+        choose_file: Choisisser un fichier
         text: Champs texte
         choice: Bouton radio
         checkbox: Case à cocher

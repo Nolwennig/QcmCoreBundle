@@ -289,7 +289,9 @@ class QuestionInteract
         $data = $form->getData();
         $answersData = $form->get('answers')->getData();
 
-        if (!is_array($answersData)) {
+        if (is_null($answersData)) {
+            $answersData = array();
+        } else if (!is_array($answersData)) {
             $answersData = array($answersData);
         }
 
