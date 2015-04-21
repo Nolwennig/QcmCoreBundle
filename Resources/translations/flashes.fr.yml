@@ -1,0 +1,17 @@
+qcm_core:
+    user:
+        create: L'utilisateur a bien été créé.
+        update: L'utilisateur a bien été mis à jour.
+        delete: L'utilisateur a bien été supprimé.
+    user_session:
+        create: La session a bien été créé.
+        update: La session a bien été mise à jour.
+        delete: La session a bien été supprimé.
+    question:
+        create: La question a bien été créé.
+        update: La question a bien été mise à jour.
+        delete: La question a bien été supprimé.
+    category:
+        create: La catégorie a bien été créé.
+        update: La catégorie a bien été mise à jour.
+        delete: La catégorie a bien été supprimé.

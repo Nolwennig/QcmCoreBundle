@@ -339,6 +339,20 @@ abstract class User implements AdvancedUserInterface, UserInterface
     }
 
     /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return $this
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
      * Check if User is enabled
      *
      * @return bool
