@@ -4,6 +4,7 @@
     "type": "symfony-bundle",
     "require": {
         "php": ">=5.3.3",
+        "avoo/qcm-components": "~1.0",
         "sylius/resource-bundle": "0.11.*@dev",
         "beberlei/DoctrineExtensions": "*@dev"
     },
