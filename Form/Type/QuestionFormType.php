@@ -88,7 +88,7 @@ class QuestionFormType extends AbstractType
                 'empty_value' => 'qcm_core.label.choose_option',
                 'label' => 'qcm_core.label.question_level',
                 'required' => false,
-                'choices' => $questionLevel
+                'choices' => array_combine($questionLevel, array_values($questionLevel))
             ));
         }
 

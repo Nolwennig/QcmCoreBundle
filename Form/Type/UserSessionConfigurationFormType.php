@@ -97,7 +97,7 @@ class UserSessionConfigurationFormType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
-                'choices' => $questionLevel
+                'choices' => array_combine($questionLevel, array_values($questionLevel))
             ));
         }
 
