@@ -59,7 +59,7 @@ class QuestionFormType extends AbstractType
                 'property' => 'name',
                 'label' => 'qcm_core.label.category'
             ))
-            ->add('name', null, array(
+            ->add('name', 'textarea', array(
                 'label' => 'qcm_core.label.title'
             ))
             ->add('type', 'choice', array(
