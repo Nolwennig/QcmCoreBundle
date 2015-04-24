@@ -6,7 +6,7 @@ QcmCoreBundle
 [![Build Status](https://scrutinizer-ci.com/g/avoo/QcmCoreBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/avoo/QcmCoreBundle/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/avoo/QcmCoreBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/avoo/QcmCoreBundle/?branch=master)
 
-The core bundle includes the basic functionalities of qcm based on SyliusResource concept
+The core bundle includes the basic functionalities of qcm based on [`SyliusResource`](https://github.com/avoo/QcmComponents) concept and implement [`QcmComponent`](https://github.com/avoo/QcmComponents)
 
 Installation
 ------------
