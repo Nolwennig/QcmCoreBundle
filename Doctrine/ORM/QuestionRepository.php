@@ -40,11 +40,7 @@ class QuestionRepository extends EntityRepository
                 ->setParameter('questions', $excludeQuestions);
         }
 
-        if (!is_null($limit)) {
-            $query->setMaxResults($limit);
-        }
-
-        $questions = $query->getQuery()->getResult();
+        $questions = array_slice($query->getQuery()->getResult(), 0, $limit);
 
         return $questions;
     }
@@ -62,7 +58,9 @@ class QuestionRepository extends EntityRepository
     public function getMissingQuestions($categories, $limit, $questions, $questionsLevel = array())
     {
         $query = $this->createQueryBuilder('q')
-            ->addSelect('RAND() as HIDDEN rand')
+            ->addSelect('RAND() as HIDDEN rand, q, c, a')
+            ->leftJoin('q.category', 'c')
+            ->leftJoin('q.answers', 'a')
             ->where('q.category IN(:category)')
             ->andWhere('q.enabled = 1')
             ->andWhere('q.id NOT IN (:questions)')

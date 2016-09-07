@@ -7,6 +7,7 @@ use Qcm\Component\Statistics\Model\Checker\CheckerValidatorInterface;
 use Qcm\Component\Statistics\Model\ScoreInterface;
 use Qcm\Component\Statistics\Model\TemplateInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class QuestionnaireStatistics
@@ -70,7 +71,6 @@ abstract class QuestionnaireStatistics
 
             $template->setFlag(isset($data['flag']) ? $data['flag'] : false);
             unset($data['flag']);
-
             $isValid = $this->checker->get($question->getType())->validate($data, $question, $this->score);
             $template->setValid($isValid);
 
@@ -91,9 +91,28 @@ abstract class QuestionnaireStatistics
     }
 
     /**
+     * Get specific template by question id
+     *
+     * @param integer $id
+     *
+     * @return TemplateInterface
+     */
+    public function getQuestion($id)
+    {
+        /** @var TemplateInterface $template */
+        foreach ($this->data as $template) {
+            if ($template->getQuestion()->getId() == $id) {
+                return $template;
+            }
+        }
+
+        throw new NotFoundHttpException(sprintf('Id question %s not found', $id));
+    }
+
+    /**
      * Get score
      *
-     * @return ScoreInterface
+     * @return array
      */
     public function getScore()
     {

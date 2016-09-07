@@ -30,6 +30,14 @@ class CheckboxChecker implements ValidateAnswerCheckerInterface
             }
         }
 
+        $tooManyAnswers = array_diff($data, $answersValid);
+
+        if (!empty($tooManyAnswers)) {
+            $score->addNotValid();
+
+            return false;
+        }
+
         $answerCompare = array_diff($answersValid, $data);
 
         if (empty($answersValid) && !empty($data)) {

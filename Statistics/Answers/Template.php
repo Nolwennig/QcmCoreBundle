@@ -78,7 +78,7 @@ class Template implements TemplateInterface
      *
      * @param boolean $flag
      *
-     * @return boolean $flag
+     * @return $this
      */
     public function setFlag($flag)
     {

@@ -5,11 +5,13 @@ namespace Qcm\Bundle\CoreBundle\Question\Generator;
 use Doctrine\ORM\EntityManager;
 use Qcm\Bundle\CoreBundle\Doctrine\ORM\QuestionRepository;
 use Qcm\Component\Question\Generator\GeneratorInterface;
+use Qcm\Component\Question\Model\QuestionInterface;
 use Qcm\Component\User\Model\SessionConfigurationInterface;
 use Qcm\Component\User\Model\UserSessionInterface;
 use Sylius\Component\Resource\Event\ResourceEvent;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class QuestionGenerator
@@ -34,11 +36,11 @@ class QuestionGenerator implements GeneratorInterface
     /**
      * Construct
      *
-     * @param EntityManager $manager
-     * @param FlashBag      $flashBag
-     * @param Translator    $translation
+     * @param EntityManager       $manager
+     * @param FlashBag            $flashBag
+     * @param TranslatorInterface $translation
      */
-    public function __construct(EntityManager $manager, FlashBag $flashBag, Translator $translation)
+    public function __construct(EntityManager $manager, FlashBag $flashBag, TranslatorInterface $translation)
     {
         $this->manager = $manager;
         $this->flashBag = $flashBag;
@@ -139,7 +141,11 @@ class QuestionGenerator implements GeneratorInterface
                     $questionsId
                 );
 
+                /** @var QuestionInterface $question */
                 foreach ($questions as $question) {
+                    foreach ($question->getAnswers() as $answer) {
+                        $question->addAnswer($answer);
+                    }
                     $configuration->addQuestion($question);
                 }
             }
@@ -169,7 +175,11 @@ class QuestionGenerator implements GeneratorInterface
                 $configuration->getQuestionsLevel()
             );
 
+            /** @var QuestionInterface $question */
             foreach ($questions as $question) {
+                foreach ($question->getAnswers() as $answer) {
+                    $question->addAnswer($answer);
+                }
                 $configuration->addQuestion($question);
             }
         }

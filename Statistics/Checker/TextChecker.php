@@ -23,6 +23,10 @@ class TextChecker implements ValidateAnswerCheckerInterface
      */
     public function validate($data, QuestionInterface $question, ScoreInterface $score)
     {
+        if (false == $question->getAnswers()->first()) {
+            return false;
+        }
+
         $value = $question->getAnswers()->first()->getValue();
         $userAnswer = array_shift($data);
 
