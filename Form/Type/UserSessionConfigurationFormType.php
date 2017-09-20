@@ -30,17 +30,24 @@ class UserSessionConfigurationFormType extends AbstractType
     private $defaultConfiguration;
 
     /**
+     * @var EntityManager $entityManager
+     */
+    private $entityManager;
+
+    /**
      * Construct
      *
-     * @param string $class
-     * @param string $validationGroup
-     * @param array  $defaultConfiguration
+     * @param string        $class
+     * @param string        $validationGroup
+     * @param array         $defaultConfiguration
+     * @param EntityManager $entityManager
      */
-    public function __construct($class, $validationGroup, $defaultConfiguration)
+    public function __construct($class, $validationGroup, $defaultConfiguration, $entityManager)
     {
         $this->class = $class;
         $this->validationGroup = $validationGroup;
         $this->defaultConfiguration = $defaultConfiguration;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -52,8 +59,8 @@ class UserSessionConfigurationFormType extends AbstractType
             ->add('categories', 'entity', array(
                 'label' => 'qcm_core.label.category',
                 'empty_value' => 'qcm_core.label.choose_option',
-                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
                 'property' => 'name',
+                'class' => 'Qcm\Bundle\PublicBundle\Entity\Category',
                 'expanded' => true,
                 'multiple' => true,
                 'attr' => array(
@@ -113,6 +120,16 @@ class UserSessionConfigurationFormType extends AbstractType
                 isset($this->defaultConfiguration['timeout'])
             ) {
                 $event->setData($this->defaultConfiguration['timeout']);
+            }
+        });
+
+        $builder->get('categories')->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            if (null === $event->getData()) {
+                return;
+            }
+
+            foreach ($event->getData() as $category) {
+                $this->entityManager->persist($category);
             }
         });
 

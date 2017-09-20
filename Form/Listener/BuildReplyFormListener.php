@@ -90,7 +90,7 @@ class BuildReplyFormListener implements EventSubscriberInterface
             $data = array();
         }
 
-        if (!empty($data) && is_string($data['answers'])) {
+        if (!empty($data) && isset($data['answers']) && is_string($data['answers'])) {
             $data['answers'] = array($data['answers']);
         }
 
